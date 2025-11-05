@@ -1,0 +1,25 @@
+mutation CreateUser($displayName: String!, $email: String!, $phoneNumber: String) @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public.") {
+  user_insert(data: {displayName: $displayName, email: $email, phoneNumber: $phoneNumber, role: "customer", createdAt_expr: "request.time", id_expr: "uuidV4()" })
+}
+
+query GetAvailableMenuItems @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public") {
+  menuItems(where: {isAvailable: {eq: true}}) {
+    id
+    name
+    description
+    price
+    imageUrl
+    category {
+      id
+      name
+    }
+  }
+}
+
+mutation PlaceOrder($customerId: UUID!, $deliveryAddress: String, $notes: String, $pickupTime: Timestamp, $totalAmount: Float!, $status: String!) @auth(level: USER) {
+  order_insert(data: {customerId: $customerId, deliveryAddress: $deliveryAddress, notes: $notes, orderDate_expr: "request.time", pickupTime: $pickupTime, totalAmount: $totalAmount, status: $status, id_expr: "uuidV4()" })
+}
+
+mutation UpdateMenuItemAvailability($id: UUID!, $isAvailable: Boolean!) @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  menuItem_update(id: $id, data: {isAvailable: $isAvailable})
+}

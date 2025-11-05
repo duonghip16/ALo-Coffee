@@ -1,0 +1,223 @@
+{
+  "settings": {
+    "store": {
+      "name": "ALo Coffee",
+      "address": "123 Đường ABC, Quận 1, TP.HCM",
+      "phone": "0932653465",
+      "email": "hello@alocoffee.com",
+      "openHours": {
+        "monday": "07:00-22:00",
+        "tuesday": "07:00-22:00",
+        "wednesday": "07:00-22:00",
+        "thursday": "07:00-22:00",
+        "friday": "07:00-22:00",
+        "saturday": "07:00-23:00",
+        "sunday": "08:00-22:00"
+      },
+      "bankInfo": {
+        "bankName": "Vietcombank",
+        "accountNumber": "1234567890",
+        "accountName": "NGUYEN VAN A",
+        "qrTemplate": "https://api.vietqr.io/image/{bank}-{account}-{amount}-{description}.jpg"
+      },
+      "theme": {
+        "primaryColor": "#8B4513",
+        "secondaryColor": "#D2691E",
+        "accentColor": "#F4A460"
+      },
+      "ownerUserId": "owner123",
+      "createdAt": { "_seconds": 1704067200, "_nanoseconds": 0 },
+      "updatedAt": { "_seconds": 1704067200, "_nanoseconds": 0 }
+    }
+  },
+  "products": {
+    "prod1": {
+      "name": "Cà phê đen",
+      "category": "Cà phê",
+      "basePrice": 25000,
+      "images": ["https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=1000"],
+      "active": true,
+      "variants": [
+        {"id": "hot", "name": "Nóng", "priceDiff": 0},
+        {"id": "iced", "name": "Đá", "priceDiff": 0},
+        {"id": "large", "name": "Size L", "priceDiff": 10000}
+      ],
+      "modifiers": [
+        {
+          "id": "shots",
+          "name": "Số shot",
+          "options": [
+            {"label": "1 shot", "priceDiff": 0},
+            {"label": "2 shot", "priceDiff": 10000},
+            {"label": "3 shot", "priceDiff": 20000}
+          ]
+        },
+        {
+          "id": "sweetness",
+          "name": "Độ ngọt",
+          "options": [
+            {"label": "Ít ngọt", "priceDiff": 0},
+            {"label": "Vừa", "priceDiff": 0},
+            {"label": "Nhiều", "priceDiff": 0}
+          ]
+        }
+      ],
+      "description": "Cà phê đen truyền thống pha phin, đậm đà hương vị",
+      "createdAt": { "_seconds": 1704067200, "_nanoseconds": 0 },
+      "updatedAt": { "_seconds": 1704067200, "_nanoseconds": 0 }
+    },
+    "prod2": {
+      "name": "Bạc xỉu",
+      "category": "Cà phê",
+      "basePrice": 30000,
+      "images": ["https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=1000"],
+      "active": true,
+      "variants": [
+        {"id": "hot", "name": "Nóng", "priceDiff": 0},
+        {"id": "iced", "name": "Đá", "priceDiff": 0}
+      ],
+      "modifiers": [
+        {
+          "id": "toppings",
+          "name": "Topping",
+          "options": [
+            {"label": "Không topping", "priceDiff": 0},
+            {"label": "Trân châu đen", "priceDiff": 8000},
+            {"label": "Thạch dừa", "priceDiff": 5000}
+          ]
+        }
+      ],
+      "description": "Cà phê sữa ngọt ngào, kết hợp hoàn hảo giữa vị đắng và ngọt",
+      "createdAt": { "_seconds": 1704067200, "_nanoseconds": 0 },
+      "updatedAt": { "_seconds": 1704067200, "_nanoseconds": 0 }
+    },
+    "prod3": {
+      "name": "Trà sữa trân châu",
+      "category": "Trà sữa",
+      "basePrice": 35000,
+      "images": ["https://images.unsplash.com/photo-1558857563-b371033873b8?q=80&w=1000"],
+      "active": true,
+      "variants": [
+        {"id": "medium", "name": "Size M", "priceDiff": 0},
+        {"id": "large", "name": "Size L", "priceDiff": 8000}
+      ],
+      "modifiers": [
+        {
+          "id": "sweetness",
+          "name": "Độ ngọt",
+          "options": [
+            {"label": "30% ngọt", "priceDiff": 0},
+            {"label": "50% ngọt", "priceDiff": 0},
+            {"label": "70% ngọt", "priceDiff": 0},
+            {"label": "100% ngọt", "priceDiff": 0}
+          ]
+        },
+        {
+          "id": "ice",
+          "name": "Đá",
+          "options": [
+            {"label": "Ít đá", "priceDiff": 0},
+            {"label": "Vừa đá", "priceDiff": 0},
+            {"label": "Nhiều đá", "priceDiff": 0}
+          ]
+        }
+      ],
+      "description": "Trà sữa truyền thống với trân châu dai giòn",
+      "createdAt": { "_seconds": 1704067200, "_nanoseconds": 0 },
+      "updatedAt": { "_seconds": 1704067200, "_nanoseconds": 0 }
+    },
+    "prod4": {
+      "name": "Sinh tố bơ",
+      "category": "Sinh tố",
+      "basePrice": 40000,
+      "images": ["https://images.unsplash.com/photo-1571771019784-3ff35f4f4277?q=80&w=1000"],
+      "active": true,
+      "variants": [
+        {"id": "medium", "name": "Size M", "priceDiff": 0},
+        {"id": "large", "name": "Size L", "priceDiff": 10000}
+      ],
+      "modifiers": [
+        {
+          "id": "toppings",
+          "name": "Topping",
+          "options": [
+            {"label": "Không topping", "priceDiff": 0},
+            {"label": "Hạt é", "priceDiff": 5000},
+            {"label": "Flan", "priceDiff": 8000}
+          ]
+        }
+      ],
+      "description": "Sinh tố bơ tươi ngon, bổ dưỡng",
+      "createdAt": { "_seconds": 1704067200, "_nanoseconds": 0 },
+      "updatedAt": { "_seconds": 1704067200, "_nanoseconds": 0 }
+    }
+  },
+  "orders": {
+    "order1": {
+      "code": "ALO001",
+      "userId": "customer456",
+      "channel": "web",
+      "tableId": "B3",
+      "items": [
+        {
+          "productId": "prod1",
+          "name": "Cà phê đen",
+          "qty": 2,
+          "unitPrice": 25000,
+          "variantId": "iced",
+          "modifiersChosen": [
+            {"modifierId": "shots", "optionLabel": "2 shot", "priceDiff": 10000}
+          ],
+          "status": "queued",
+          "note": "Ít ngọt"
+        },
+        {
+          "productId": "prod2",
+          "name": "Bạc xỉu",
+          "qty": 1,
+          "unitPrice": 30000,
+          "variantId": "hot",
+          "modifiersChosen": [],
+          "status": "queued",
+          "note": ""
+        }
+      ],
+      "amounts": {
+        "subtotal": 105000,
+        "discount": 0,
+        "total": 105000
+      },
+      "payment": {
+        "method": "vietqr",
+        "status": "pending",
+        "ref": "ORD-ABC123"
+      },
+      "status": "pending",
+      "createdAt": { "_seconds": 1704240000, "_nanoseconds": 0 },
+      "updatedAt": { "_seconds": 1704240000, "_nanoseconds": 0 },
+      "note": "Giao nhanh"
+    }
+  },
+  "users": {
+    "owner123": {
+      "name": "Chủ quán ALo",
+      "phone": "0932653465",
+      "email": "owner@alocoffee.com",
+      "role": "owner",
+      "points": 0,
+      "createdAt": { "_seconds": 1704067200, "_nanoseconds": 0 },
+      "lastLogin": { "_seconds": 1704067200, "_nanoseconds": 0 },
+      "active": true
+    },
+    "customer456": {
+      "name": "Nguyễn Văn A",
+      "phone": "0901234567",
+      "email": "customer@example.com",
+      "role": "customer",
+      "points": 150,
+      "createdAt": { "_seconds": 1704153600, "_nanoseconds": 0 },
+      "lastLogin": { "_seconds": 1704240000, "_nanoseconds": 0 },
+      "active": true
+    }
+  }
+}

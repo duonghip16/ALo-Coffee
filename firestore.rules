@@ -1,0 +1,81 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner() {
+      return isAuthenticated() && request.auth.token.owner == true;
+    }
+
+    function isCustomer() {
+      return isAuthenticated() && request.auth.token.owner != true;
+    }
+
+    function isOrderOwner(orderId) {
+      return isAuthenticated() &&
+             exists(/databases/$(database)/documents/orders/$(orderId)) &&
+             get(/databases/$(database)/documents/orders/$(orderId)).data.userId == request.auth.uid;
+    }
+
+    // Settings - public read, owner write
+    match /settings/{doc} {
+      allow read: if true;
+      allow write: if isOwner();
+    }
+
+    // Products - public read, owner write
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isOwner();
+    }
+
+    // Orders
+    match /orders/{orderId} {
+      // Customers can create orders
+      allow create: if isAuthenticated();
+      // Customers can read their own orders, owners can read all
+      allow read: if isOrderOwner(orderId) || isOwner();
+      // Owners can update order status, customers can update their own orders (limited)
+      allow update: if isOwner() ||
+                       (isOrderOwner(orderId) &&
+                        // Customers can only update notes, address, phone
+                        request.resource.data.diff(resource.data).affectedKeys()
+                        .hasOnly(['notes', 'address', 'phone', 'customerName']));
+    }
+
+    // Favorites - users manage their own
+    match /favorites/{favoriteId} {
+      allow read, write: if isAuthenticated() &&
+                            request.auth.uid == resource.data.userId;
+      allow create: if isAuthenticated() &&
+                       request.auth.uid == request.resource.data.userId;
+    }
+
+    // Users - users manage their own profile
+    match /users/{userId} {
+      allow read, write: if isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Notifications - users read their own, owners manage all
+    match /notifications/{notificationId} {
+      allow read: if isAuthenticated() &&
+                     (request.auth.uid == resource.data.userId || isOwner());
+      allow write: if isOwner();
+    }
+
+    // Prints (optional) - owner only
+    match /prints/{printId} {
+      allow read, write: if isOwner();
+    }
+
+    // Promotions (optional) - owner manage, public read
+    match /promotions/{promotionId} {
+      allow read: if true;
+      allow write: if isOwner();
+    }
+  }
+}

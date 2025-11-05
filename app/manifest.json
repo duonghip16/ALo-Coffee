@@ -1,0 +1,41 @@
+{
+  "name": "ALo Coffee",
+  "short_name": "ALo Coffee",
+  "description": "Đặt món cafe hiện đại - Nơi bạn tìm lại thanh thản",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fef7ed",
+  "theme_color": "#6b4226",
+  "orientation": "portrait-primary",
+  "categories": ["food", "lifestyle"],
+  "lang": "vi",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ]
+}
