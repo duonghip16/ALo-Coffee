@@ -111,7 +111,7 @@ export default function AdminMenuPage() {
       <div className="flex flex-1 overflow-hidden">
         <AdminSidebar />
 
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 overflow-auto ml-20 lg:ml-64">
           <div className="max-w-7xl mx-auto px-3 lg:px-6 py-4 lg:py-8">
             {/* Header */}
             <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 mb-3 lg:mb-6">

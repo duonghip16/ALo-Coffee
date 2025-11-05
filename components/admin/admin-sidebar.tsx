@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Home, ShoppingBag, Package, Settings, BarChart3, Users } from "lucide-react"
+import { Home, ShoppingBag, Package, Settings, BarChart3, Users, MessageSquare } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -11,6 +11,7 @@ const menuItems = [
   { icon: ShoppingBag, label: "Đơn hàng", href: "/admin/orders" },
   { icon: Package, label: "Menu", href: "/admin/menu" },
   { icon: Users, label: "Người dùng", href: "/admin/users" },
+  { icon: MessageSquare, label: "Đánh giá", href: "/admin/reviews" },
   { icon: BarChart3, label: "Thống kê", href: "/admin/analytics" },
   { icon: Settings, label: "Cài đặt", href: "/admin/settings" },
 ]
@@ -22,9 +23,9 @@ export function AdminSidebar() {
     <motion.aside
       initial={{ x: -50, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      className="w-20 lg:w-64 bg-[#F7EFE5] dark:bg-[#45301f] border-r border-[#E4D9C9] dark:border-[#7B5433] min-h-screen flex-shrink-0"
+      className="fixed left-0 top-14 bottom-0 w-20 lg:w-64 bg-[#F7EFE5] dark:bg-[#45301f] border-r border-[#E4D9C9] dark:border-[#7B5433] flex-shrink-0 overflow-y-auto z-40"
     >
-      <div className="p-3 lg:p-6">
+      <div className="p-3 lg:p-6 pt-6 lg:pt-8">
         {/* Logo - Mobile: chỉ icon, Desktop: full */}
         <div className="flex items-center justify-center lg:justify-start gap-3 mb-6 lg:mb-8">
           <img src="/favicon.png" alt="ALo Coffee" className="w-10 h-10 rounded-xl shadow-md" />

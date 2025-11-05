@@ -150,9 +150,9 @@ export default function AboutPage() {
             <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 max-w-6xl mx-auto">
               {[
                 { icon: Star, title: "Chất lượng", desc: "Cà phê được chọn lọc kỹ, pha chế chuẩn vị từng ly.", color: "from-[#C47B3E] to-[#8E5522]" },
-                { icon: Heart, title: "Tâm huyết", desc: "Mỗi tách cà phê là cả đam mê và sự tận tâm của barista.", color: "from-[#6B4423] to-[#4e3521]" },
-                { icon: Award, title: "Uy tín", desc: "Duy trì chất lượng và sự tin tưởng qua từng trải nghiệm.", color: "from-[#8B6F47] to-[#6B4423]" },
                 { icon: Coffee, title: "Làm việc", desc: "Góc yên tĩnh, wifi mạnh – lý tưởng cho dân văn phòng, freelancer.", color: "from-[#C47B3E] to-[#8E5522]" },
+                { icon: Award, title: "Uy tín", desc: "Duy trì chất lượng và sự tin tưởng qua từng trải nghiệm.", color: "from-[#8B6F47] to-[#6B4423]" },
+                { icon: Heart, title: "Tâm huyết", desc: "Mỗi tách cà phê là cả đam mê và sự tận tâm của barista.", color: "from-[#6B4423] to-[#4e3521]" },
                 { icon: Coffee, title: "Chill", desc: "Nhạc nhẹ, không gian thư giãn giúp bạn quên đi nhịp sống hối hả.", color: "from-[#6B4423] to-[#4e3521]" },
                 { icon: Coffee, title: "Sân vườn", desc: "Không gian thoáng đãng, nhiều cây xanh, đón gió tự nhiên.", color: "from-[#2D5016] to-[#1a3009]" }
               ].map((item, index) => {

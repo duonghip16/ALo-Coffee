@@ -88,50 +88,34 @@ export function Navbar() {
       </div>
     </nav>
 
-    {/* Mobile Bottom Navigation */}
+    {/* Mobile Navigation - Below Header */}
     <motion.nav 
-      initial={{ y: 100 }}
-      animate={{ y: 0 }}
-      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#6B4423] dark:bg-[#3A2416] border-t border-[#5A3A1F] dark:border-[#2A1A12] shadow-lg"
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      className="md:hidden sticky top-14 z-40 bg-[#5A3A1F] dark:bg-[#2A1A12] border-b border-[#4A2A0F] dark:border-[#1A0A02]"
     >
-      <div className="flex items-center justify-around h-16 px-2">
+      <div className="flex items-center justify-around px-2 py-2">
         {navLinks.map((link) => {
           const Icon = link.icon
           const isActive = pathname === link.href
           return (
             <Link key={link.href} href={link.href} className="flex-1">
               <motion.div
-                whileTap={{ scale: 0.9 }}
-                className={`flex flex-col items-center justify-center gap-1 py-2 rounded-lg transition-all ${
+                whileTap={{ scale: 0.95 }}
+                className={`flex items-center justify-center gap-2 py-2 px-3 rounded-lg transition-all ${
                   isActive 
-                    ? "text-[#FEF7ED]" 
-                    : "text-[#FEF7ED]/60 hover:text-[#FEF7ED]/80"
+                    ? "bg-[#6B4423] dark:bg-[#3A2416] text-[#FEF7ED]" 
+                    : "text-[#FEF7ED]/70 hover:text-[#FEF7ED]"
                 }`}
               >
-                <motion.div
-                  animate={{
-                    scale: isActive ? 1.1 : 1,
-                    y: isActive ? -2 : 0
-                  }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <Icon className="w-5 h-5" />
-                </motion.div>
-                <span className="text-[10px] font-medium">{link.label}</span>
-                {isActive && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#FEF7ED] rounded-full"
-                  />
-                )}
+                <Icon className="w-4 h-4" />
+                <span className="text-xs font-medium">{link.label}</span>
               </motion.div>
             </Link>
           )
         })}
       </div>
     </motion.nav>
-
-
     </>
   )
 }

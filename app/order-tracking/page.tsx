@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 export default function OrderTrackingPage() {
   const { user, loading: authLoading } = useAuth()
   const router = useRouter()
-  const { orders, loading } = useOrders(user?.uid || null)
+  const { orders, loading } = useOrders(user?.id || null)
 
   useEffect(() => {
     if (!authLoading && !user) {

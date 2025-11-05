@@ -122,7 +122,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-[#FEF7ED]/10 pt-4 sm:pt-8 text-center text-xs sm:text-sm text-[#FEF7ED]/60">
+        <div className="pt-4 sm:pt-8 text-center text-xs sm:text-sm text-[#FEF7ED]/60">
           <p>&copy; {new Date().getFullYear()} ALo Coffee. Made with ❤️ in Saigon 🇻🇳</p>
         </div>
       </div>

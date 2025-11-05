@@ -21,7 +21,7 @@ export function AdminHeader() {
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="bg-[#A97B50] dark:bg-[#3A2416] text-white sticky top-0 z-30 shadow-[0_2px_4px_rgba(0,0,0,0.25)]"
+      className="bg-[#A97B50] dark:bg-[#3A2416] text-white sticky top-0 z-50 shadow-[0_2px_4px_rgba(0,0,0,0.25)]"
     >
       <div className="max-w-7xl mx-auto px-3 lg:px-4 py-3 lg:py-4">
         <div className="flex items-center justify-between gap-2">

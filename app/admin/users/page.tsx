@@ -63,7 +63,7 @@ export default function AdminUsersPage() {
       <div className="flex flex-1 overflow-hidden">
         <AdminSidebar />
 
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 overflow-auto ml-20 lg:ml-64">
           <div className="max-w-7xl mx-auto px-3 lg:px-6 py-4 lg:py-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}

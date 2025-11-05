@@ -9,7 +9,7 @@ interface CartItemProps {
     id: string
     name: string
     price: number
-    image: string
+    imageUrl: string
     quantity: number
     size?: string
     toppings?: string[]
@@ -24,7 +24,7 @@ export function CartItem({ item }: CartItemProps) {
   return (
     <div className="flex gap-4 p-4 bg-white dark:bg-[#8B6F47] rounded-lg border border-[#E8DCC8] dark:border-[#6B4423]">
       <img
-        src={item.image}
+        src={item.imageUrl}
         alt={item.name}
         className="w-20 h-20 object-cover rounded-lg"
       />

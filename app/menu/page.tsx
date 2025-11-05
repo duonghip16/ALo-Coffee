@@ -69,7 +69,7 @@ export default function Menu() {
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <div className="mb-4 sm:mb-6 px-2 sm:px-4">
-                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 bg-[#E4D9C9] dark:bg-[#d6c8bf] border border-[#E4D9C9] p-1 rounded-lg">
+                <div className="grid grid-cols-3 sm:grid-cols-6 gap-1.5 sm:gap-2 bg-[#E4D9C9] dark:bg-[#d6c8bf] border border-[#E4D9C9] p-1 rounded-lg">
                   {categories.map((cat) => {
                     const Icon = cat.icon
                     const count = getFilteredProducts(cat.id).length
@@ -78,15 +78,15 @@ export default function Menu() {
                       <button
                         key={cat.id}
                         onClick={() => setActiveTab(cat.id)}
-                        className={`flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-md font-bold transition-all min-h-14 ${
+                        className={`flex flex-col items-center justify-center gap-0.5 py-1.5 px-1 rounded-md font-bold transition-all min-h-[52px] sm:min-h-14 ${
                           isActive
                             ? "bg-[#6B4423] text-[#FEF7ED] shadow-md"
                             : "text-[#3A2416] hover:bg-[#3A2416]/10"
                         }`}
                       >
-                        <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
-                        <span className="text-[10px] sm:text-xs leading-tight text-center">{cat.label}</span>
-                        <span className="text-[9px] opacity-70">({count})</span>
+                        <Icon className="h-3.5 w-3.5 sm:h-5 sm:w-5" />
+                        <span className="text-[9px] sm:text-xs leading-tight text-center">{cat.label}</span>
+                        <span className="text-[8px] sm:text-[9px] opacity-70">({count})</span>
                       </button>
                     )
                   })}

@@ -98,6 +98,7 @@ export interface Settings {
   bankAccount?: string
   bankCode?: string
   bankName?: string
+  accountName?: string
   isOpen: boolean
   ownerUserId?: string
   theme?: {
@@ -401,9 +402,10 @@ export async function getSettings(): Promise<Settings> {
       shopPhone: "0932653465",
       shopAddress: "149/10 Bùi Văn Ngữ, Phường Hiệp Thành, Quận 12",
       shopDescription: "ALo Coffee – nơi bạn dừng chân giữa Sài Gòn nhộn nhịp để tìm lại một khoảnh khắc thanh thản",
-      bankAccount: "1234567890",
+      bankAccount: "1581686879",
       bankCode: "VCB",
-      bankName: "Vietcombank",
+      bankName: "Techcombank",
+      accountName: "Phạm Quang Cường",
       isOpen: true,
       theme: {
         primaryColor: "#8B4513"
@@ -431,6 +433,23 @@ export async function updateSettings(settings: Partial<Settings>) {
   } else {
     const settingsDoc = doc(db, "settings", snapshot.docs[0].id)
     await updateDoc(settingsDoc, settings)
+  }
+
+  // Sync payment settings to separate document
+  if (settings.bankAccount || settings.bankName || settings.accountName) {
+    const paymentDoc = doc(db, "settings", "payment")
+    await updateDoc(paymentDoc, {
+      bankAccount: settings.bankAccount,
+      bankName: settings.bankName,
+      accountName: settings.accountName
+    }).catch(async () => {
+      // If document doesn't exist, create it
+      await addDoc(collection(db, "settings"), {
+        bankAccount: settings.bankAccount || "1581686879",
+        bankName: settings.bankName || "Techcombank",
+        accountName: settings.accountName || "Phạm Quang Cường"
+      })
+    })
   }
 }
 

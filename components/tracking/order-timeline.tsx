@@ -73,7 +73,7 @@ export function OrderTimeline({ order }: OrderTimelineProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="p-6 bg-white shadow-lg">
+      <Card className="p-6 bg-[#F7EFE5] dark:bg-[#41352a] shadow-lg">
         <div className="flex items-center gap-2 mb-6">
           <Package className="h-5 w-5 text-coffee-700" />
           <h3 className="text-xl font-semibold text-coffee-900">Trạng thái đơn hàng</h3>

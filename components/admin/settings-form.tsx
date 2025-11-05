@@ -138,25 +138,35 @@ export function SettingsForm() {
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">
+        <div className="space-y-3">
+          <h4 className="text-sm font-semibold text-[#2A1A12] dark:text-[#E8DCC8]">Thông tin thanh toán</h4>
+          <div>
+            <label className="block text-xs lg:text-sm font-medium text-[#2A1A12] dark:text-[#E8DCC8] mb-1">Tên ngân hàng</label>
+            <Input
+              type="text"
+              value={settings.bankName || ""}
+              onChange={(e) => handleChange("bankName", e.target.value)}
+              placeholder="Techcombank"
+              className="bg-white dark:bg-[#3A2416] text-[#2A1A12] dark:text-white border-[#E4D9C9] dark:border-[#7B5433] text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-xs lg:text-sm font-medium text-[#2A1A12] dark:text-[#E8DCC8] mb-1">Chủ tài khoản</label>
+            <Input
+              type="text"
+              value={settings.accountName || ""}
+              onChange={(e) => handleChange("accountName", e.target.value)}
+              placeholder="Phạm Quang Cường"
+              className="bg-white dark:bg-[#3A2416] text-[#2A1A12] dark:text-white border-[#E4D9C9] dark:border-[#7B5433] text-sm"
+            />
+          </div>
           <div>
             <label className="block text-xs lg:text-sm font-medium text-[#2A1A12] dark:text-[#E8DCC8] mb-1">Số tài khoản</label>
             <Input
               type="text"
               value={settings.bankAccount || ""}
               onChange={(e) => handleChange("bankAccount", e.target.value)}
-              placeholder="1234567890"
-              className="bg-white dark:bg-[#3A2416] text-[#2A1A12] dark:text-white border-[#E4D9C9] dark:border-[#7B5433] text-sm"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs lg:text-sm font-medium text-[#2A1A12] dark:text-[#E8DCC8] mb-1">Mã ngân hàng</label>
-            <Input
-              type="text"
-              value={settings.bankCode || ""}
-              onChange={(e) => handleChange("bankCode", e.target.value)}
-              placeholder="VCB"
+              placeholder="1581686879"
               className="bg-white dark:bg-[#3A2416] text-[#2A1A12] dark:text-white border-[#E4D9C9] dark:border-[#7B5433] text-sm"
             />
           </div>

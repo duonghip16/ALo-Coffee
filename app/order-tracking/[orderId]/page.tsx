@@ -45,9 +45,9 @@ export default function OrderDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background dark:bg-[#c19c8a]">
       {/* Header */}
-      <div className="bg-white border-b border-border sticky top-0 z-30">
+      <div className="bg-[#FEF7ED] dark:bg-[#3A2C20] shadow-sm border-b border-border sticky top-0 z-30">
         <div className="max-w-2xl mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
             <button onClick={() => router.back()} className="text-coffee-700 hover:text-coffee-900">
@@ -55,7 +55,7 @@ export default function OrderDetailPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
-            <h1 className="text-2xl font-bold text-coffee-900">Chi tiết đơn hàng</h1>
+            <h1 className="text-2xl font-bold text-coffee-900 dark:text-[#dcc9ad]">Chi tiết đơn hàng</h1>
           </div>
         </div>
       </div>
@@ -66,7 +66,7 @@ export default function OrderDetailPage() {
 
         <div className="mt-6">
           <Button onClick={() => router.push("/menu")} variant="outline" className="w-full">
-            Tiếp tục mua sắm
+            Tiếp tục
           </Button>
         </div>
       </div>

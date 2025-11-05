@@ -10,6 +10,9 @@ import { MainLayout } from "@/components/layout/main-layout"
 import { useState, useEffect } from "react"
 import { toast } from "sonner"
 import { getSettings, type Settings } from "@/lib/firestore-service"
+import { collection, addDoc } from "firebase/firestore"
+import { db } from "@/lib/firebase-client"
+import { getVietnamTimestamp } from "@/lib/date-utils"
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: "", phone: "", message: "" })
@@ -27,9 +30,16 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    toast.success("Cảm ơn bạn! Chúng tôi sẽ liên hệ sớm nhất.")
-    setFormData({ name: "", phone: "", message: "" })
+    try {
+      await addDoc(collection(db, "messages"), {
+        ...formData,
+        createdAt: getVietnamTimestamp()
+      })
+      toast.success("Cảm ơn bạn! Chúng tôi sẽ liên hệ sớm nhất.")
+      setFormData({ name: "", phone: "", message: "" })
+    } catch (error) {
+      toast.error("Có lỗi xảy ra, vui lòng thử lại")
+    }
     setLoading(false)
   }
 
