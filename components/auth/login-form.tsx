@@ -25,17 +25,24 @@ export function LoginForm() {
     setError("")
 
     try {
+      let user
       if (isSignUp) {
         if (!name.trim()) {
           setError("Vui lòng nhập tên")
           setLoading(false)
           return
         }
-        await signUpWithPhone(name.trim(), phone.trim(), password)
+        user = await signUpWithPhone(name.trim(), phone.trim(), password)
       } else {
-        await signInWithPhone(phone.trim(), password)
+        user = await signInWithPhone(phone.trim(), password)
       }
-      router.push("/menu")
+      
+      // Redirect based on role
+      if (user?.role === "admin") {
+        router.push("/admin")
+      } else {
+        router.push("/menu")
+      }
     } catch (err: any) {
       if (err.code === "auth/email-already-in-use") {
         setError("Số điện thoại đã được đăng ký")

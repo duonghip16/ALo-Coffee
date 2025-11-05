@@ -13,6 +13,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { UserForm } from "@/components/admin/user-form"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { useUsers } from "@/hooks/use-users"
+import { ResetPasswordDialog } from "@/components/admin/reset-password-dialog"
 
 export default function AdminUsersPage() {
   const { user, loading: authLoading } = useAuth()

@@ -20,7 +20,7 @@ export interface CustomUser {
   phone: string
   passwordHash: string
   avatarUrl?: string
-  role: "customer" | "owner"
+  role: "customer" | "admin"
   status: "active" | "inactive"
   isArchived: boolean
   createdAt: any

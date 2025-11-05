@@ -44,12 +44,29 @@ next-env.d.ts
 /public/workbox-*.js.map
 /public/worker-*.js.map
 
+# Firebase
+/functions/lib
+/src/dataconnect-generated
+
 # IDE
 .vscode/
 .idea/
+.claude/
 *.swp
 *.swo
 *~
 
 # OS
 Thumbs.db
+
+# Internal docs (keep in private branch)
+DO.md
+DO_COMPLETED.md
+TODO.md
+ORDER_FLOW.md
+ADMIN_RESPONSIVE_OPTIMIZATION.md
+STRUCTURE.md
+
+# Lock files (keep only one)
+pnpm-lock.yaml
+pnpm-workspace.yaml

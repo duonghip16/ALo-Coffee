@@ -11,6 +11,7 @@ import { ArrowLeft, LogOut, Heart, Package, Award, TrendingUp } from "lucide-rea
 import { getOrders } from "@/lib/firestore-service"
 import type { Order } from "@/lib/firestore-service"
 import { useLoyalty } from "@/hooks/use-loyalty"
+import { ChangePasswordDialog } from "@/components/profile/change-password-dialog"
 
 export default function ProfilePage() {
   const { user, loading, logout } = useAuth()
@@ -165,6 +166,11 @@ export default function ProfilePage() {
             </Button>
           </div>
         </Card>
+
+        {/* Change Password */}
+        {user && (
+          <ChangePasswordDialog userId={user.id} currentPasswordHash={user.passwordHash} />
+        )}
 
         {/* Orders Summary */}
         <Card className="p-6">
