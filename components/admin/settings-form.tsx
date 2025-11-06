@@ -91,6 +91,9 @@ export function SettingsForm() {
             value={settings.shopPhone}
             onChange={(e) => handleChange("shopPhone", e.target.value)}
             placeholder="0932653465"
+            pattern="0\d{9}"
+            maxLength={10}
+            title="Số điện thoại phải có 10 số và bắt đầu bằng số 0"
             className="bg-white dark:bg-[#3A2416] text-[#2A1A12] dark:text-white border-[#E4D9C9] dark:border-[#7B5433] text-sm"
           />
         </div>

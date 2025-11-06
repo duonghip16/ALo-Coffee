@@ -56,6 +56,12 @@ export default function CheckoutPage() {
       return
     }
 
+    const phoneRegex = /^0\d{9}$/
+    if (!phoneRegex.test(phone.trim())) {
+      toast.error("Số điện thoại phải có 10 số và bắt đầu bằng số 0")
+      return
+    }
+
     if (orderType === "dine-in" && !tableNumber.trim()) {
       toast.error("Vui lòng nhập số bàn")
       return
@@ -202,9 +208,13 @@ export default function CheckoutPage() {
                         <Label htmlFor="phone" className="text-sm text-[#3A2416] dark:text-[#FEF7ED]">Số điện thoại *</Label>
                         <Input
                           id="phone"
+                          type="tel"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
                           placeholder="0123456789"
+                          pattern="0\d{9}"
+                          maxLength={10}
+                          title="Số điện thoại phải có 10 số và bắt đầu bằng số 0"
                           className="text-sm h-10"
                         />
                       </div>

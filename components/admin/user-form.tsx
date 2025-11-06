@@ -178,6 +178,9 @@ export function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder="0932653465"
+            pattern="0\d{9}"
+            maxLength={10}
+            title="Số điện thoại phải có 10 số và bắt đầu bằng số 0"
           />
         </div>
 

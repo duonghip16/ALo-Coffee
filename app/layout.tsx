@@ -4,6 +4,7 @@ import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
 import { Providers } from "@/components/providers"
+import "@/lib/suppress-extension-errors"
 import "./globals.css"
 
 export const metadata: Metadata = {

@@ -275,6 +275,27 @@ export async function updateItemStatus(orderId: string, itemIndex: number, statu
   })
 }
 
+export async function deleteOrder(orderId: string) {
+  const orderDoc = doc(db, "orders", orderId)
+  await deleteDoc(orderDoc)
+}
+
+export async function updateOrderItems(orderId: string, items: Order["items"]) {
+  const orderDoc = doc(db, "orders", orderId)
+  const subtotal = items.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0)
+  await updateDoc(orderDoc, {
+    items,
+    subtotal,
+    total: subtotal,
+    amounts: {
+      subtotal,
+      discount: 0,
+      total: subtotal
+    },
+    updatedAt: getVietnamTimestamp()
+  })
+}
+
 // Review operations
 export async function createReview(review: Omit<Review, 'id'>) {
   const reviewsCollection = collection(db, "reviews")

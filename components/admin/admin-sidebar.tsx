@@ -1,13 +1,14 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Home, ShoppingBag, Package, Settings, BarChart3, Users, MessageSquare } from "lucide-react"
+import { Home, ShoppingBag, Package, Settings, BarChart3, Users, MessageSquare, Utensils } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 const menuItems = [
   { icon: Home, label: "Dashboard", href: "/admin/dashboard" },
+  { icon: Utensils, label: "POS", href: "/admin/pos" },
   { icon: ShoppingBag, label: "Đơn hàng", href: "/admin/orders" },
   { icon: Package, label: "Menu", href: "/admin/menu" },
   { icon: Users, label: "Người dùng", href: "/admin/users" },

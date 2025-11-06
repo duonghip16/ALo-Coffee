@@ -31,6 +31,12 @@ export default function ContactPage() {
     e.preventDefault()
     setLoading(true)
     try {
+      const phoneRegex = /^0\d{9}$/
+      if (!phoneRegex.test(formData.phone.trim())) {
+        toast.error("Số điện thoại phải có 10 số và bắt đầu bằng số 0")
+        setLoading(false)
+        return
+      }
       await addDoc(collection(db, "messages"), {
         ...formData,
         createdAt: getVietnamTimestamp()
@@ -82,9 +88,13 @@ export default function ContactPage() {
                   <div>
                     <label className="text-sm font-medium mb-2 block">Số điện thoại</label>
                     <Input
+                      type="tel"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="0123456789"
+                      pattern="0\d{9}"
+                      maxLength={10}
+                      title="Số điện thoại phải có 10 số và bắt đầu bằng số 0"
                       required
                     />
                   </div>

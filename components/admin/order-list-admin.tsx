@@ -2,14 +2,17 @@
 
 import type { Order } from "@/lib/firestore-service"
 import { Card } from "@/components/ui/card"
-import { updateOrderStatus, updateOrderPaymentStatus, updateItemStatus } from "@/lib/firestore-service"
+import { updateOrderStatus, updateOrderPaymentStatus, updateItemStatus, deleteOrder } from "@/lib/firestore-service"
+import { OrderEditDialog } from "./order-edit-dialog"
+import { toast } from "sonner"
 import { useState } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
-import { Clock, CheckCircle, ChefHat, Truck, Package, CreditCard, MapPin, Phone, User, Eye, Calendar } from "lucide-react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Clock, CheckCircle, ChefHat, Truck, Package, CreditCard, MapPin, Phone, User, Eye, Calendar, Edit, Trash2, Mail, Hash, DollarSign, FileText, AlertCircle } from "lucide-react"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { ConfirmDialog } from "@/components/ui/confirm-dialog"
 import { formatVietnamDate, isToday } from "@/lib/date-utils"
 
 interface OrderListAdminProps {
@@ -35,6 +38,10 @@ const PAYMENT_STATUS_CONFIG = {
 export function OrderListAdmin({ orders }: OrderListAdminProps) {
   const [updating, setUpdating] = useState<string | null>(null)
   const [error, setError] = useState("")
+  const [editingOrder, setEditingOrder] = useState<Order | null>(null)
+  const [showEditDialog, setShowEditDialog] = useState(false)
+  const [deleteOrderId, setDeleteOrderId] = useState<string | null>(null)
+  const [deleteOrderCode, setDeleteOrderCode] = useState<string>("")
 
   // Nhóm đơn hàng theo ngày
   const groupedOrders = orders.reduce((groups, order) => {
@@ -83,6 +90,20 @@ export function OrderListAdmin({ orders }: OrderListAdminProps) {
       await updateItemStatus(orderId, itemId, newStatus)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Lỗi khi cập nhật món")
+    } finally {
+      setUpdating(null)
+    }
+  }
+
+  const handleDeleteOrder = async (orderId: string) => {
+    setUpdating(orderId)
+    try {
+      const { deleteDoc, doc } = await import("firebase/firestore")
+      const { db } = await import("@/lib/firebase-client")
+      await deleteDoc(doc(db, "orders", orderId))
+      toast.success("Đã xóa đơn hàng")
+    } catch (err) {
+      toast.error("Có lỗi xảy ra")
     } finally {
       setUpdating(null)
     }
@@ -231,41 +252,141 @@ export function OrderListAdmin({ orders }: OrderListAdminProps) {
                     )}
                   </div>
 
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="ghost" size="sm" className="text-[10px] lg:text-xs w-full dark:text-white dark:hover:bg-[#5A3420] h-8 lg:h-9">
-                        <Eye className="h-3 w-3 mr-1" />
-                        Chi tiết
-                      </Button>
-                    </DialogTrigger>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setEditingOrder(order)
+                        setShowEditDialog(true)
+                      }}
+                      disabled={updating === order.id || order.status === "completed"}
+                      className="text-[10px] lg:text-xs text-blue-600 hover:text-blue-700 h-8 lg:h-9"
+                    >
+                      <Edit className="h-3 w-3" />
+                    </Button>
+                    
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant="ghost" size="sm" className="text-[10px] lg:text-xs flex-1 dark:text-white dark:hover:bg-[#5A3420] h-8 lg:h-9">
+                          <Eye className="h-3 w-3 mr-1" />
+                          Chi tiết
+                        </Button>
+                      </DialogTrigger>
                     <DialogContent className="max-w-[95vw] lg:max-w-2xl max-h-[85vh] overflow-y-auto">
                       <DialogHeader>
-                        <DialogTitle>Đơn hàng #{order.code || order.id.slice(0, 8)}</DialogTitle>
+                        <DialogTitle className="text-xl">Đơn hàng #{order.code || order.id.slice(0, 8)}</DialogTitle>
+                        <DialogDescription>Xem thông tin chi tiết đơn hàng</DialogDescription>
                       </DialogHeader>
 
                       {/* Order Details */}
                       <div className="space-y-4">
-                        {/* Customer Info */}
-                        <div className="grid grid-cols-2 gap-4 p-4 bg-muted/50 rounded-lg">
+                        {/* Order Info Header */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-4 bg-linear-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg">
                           <div>
-                            <h4 className="font-semibold text-sm mb-2">Thông tin khách hàng</h4>
-                            <div className="space-y-1 text-sm">
-                              <p><User className="inline h-3 w-3 mr-1" />{order.customerName || "Guest"}</p>
-                              <p><Phone className="inline h-3 w-3 mr-1" />{order.phone}</p>
-                              {order.address && <p><MapPin className="inline h-3 w-3 mr-1" />{order.address}</p>}
-                            </div>
+                            <p className="text-xs text-muted-foreground flex items-center gap-1">
+                              <Hash className="h-3 w-3" />Mã đơn
+                            </p>
+                            <p className="font-bold text-sm">{order.code || order.id.slice(0, 8)}</p>
                           </div>
                           <div>
-                            <h4 className="font-semibold text-sm mb-2">Thanh toán</h4>
-                            <div className="space-y-1 text-sm">
-                              <p>Phương thức: {order.payment?.method === "vietqr" ? "VietQR" : "COD"}</p>
-                              <p>Trạng thái: <Badge className={PAYMENT_STATUS_CONFIG[order.payment?.status || "pending"].color}>
-                                {PAYMENT_STATUS_CONFIG[order.payment?.status || "pending"].label}
-                              </Badge></p>
-                              {order.payment?.ref && <p>Ref: {order.payment.ref}</p>}
-                            </div>
+                            <p className="text-xs text-muted-foreground flex items-center gap-1">
+                              <Clock className="h-3 w-3" />Thời gian
+                            </p>
+                            <p className="font-semibold text-sm">{new Date(order.createdAt).toLocaleString("vi-VN")}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-muted-foreground flex items-center gap-1">
+                              <Package className="h-3 w-3" />Loại
+                            </p>
+                            <p className="font-semibold text-sm">
+                              {order.orderType === "dine-in" ? "🍽️ Tại quán" : 
+                               order.orderType === "takeaway" ? "🛍️ Mang về" : "🚴 Giao hàng"}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-muted-foreground flex items-center gap-1">
+                              <DollarSign className="h-3 w-3" />Tổng tiền
+                            </p>
+                            <p className="font-bold text-lg text-green-600">{order.amounts?.total?.toLocaleString() || order.total?.toLocaleString()}đ</p>
                           </div>
                         </div>
+
+                        {/* Customer Info */}
+                        <Card className="p-4">
+                          <h4 className="font-bold text-sm mb-3 flex items-center gap-2">
+                            <User className="h-4 w-4" />
+                            Thông tin khách hàng
+                          </h4>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div className="flex items-center gap-2">
+                              <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                <User className="h-4 w-4 text-blue-600" />
+                              </div>
+                              <div>
+                                <p className="text-xs text-muted-foreground">Tên khách hàng</p>
+                                <p className="font-semibold">{order.customerName || "Guest"}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                                <Phone className="h-4 w-4 text-green-600" />
+                              </div>
+                              <div>
+                                <p className="text-xs text-muted-foreground">Số điện thoại</p>
+                                <p className="font-semibold">{order.phone}</p>
+                              </div>
+                            </div>
+                            {order.address && (
+                              <div className="flex items-center gap-2 md:col-span-2">
+                                <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
+                                  <MapPin className="h-4 w-4 text-purple-600" />
+                                </div>
+                                <div>
+                                  <p className="text-xs text-muted-foreground">Địa chỉ giao hàng</p>
+                                  <p className="font-semibold">{order.address}</p>
+                                </div>
+                              </div>
+                            )}
+                            {order.tableNumber && (
+                              <div className="flex items-center gap-2">
+                                <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+                                  <Package className="h-4 w-4 text-orange-600" />
+                                </div>
+                                <div>
+                                  <p className="text-xs text-muted-foreground">Số bàn</p>
+                                  <p className="font-semibold">{order.tableNumber}</p>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </Card>
+
+                        {/* Payment Info */}
+                        <Card className="p-4">
+                          <h4 className="font-bold text-sm mb-3 flex items-center gap-2">
+                            <CreditCard className="h-4 w-4" />
+                            Thanh toán
+                          </h4>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div>
+                              <p className="text-xs text-muted-foreground">Phương thức</p>
+                              <p className="font-semibold">{order.payment?.method === "vietqr" ? "VietQR" : "Tiền mặt"}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-muted-foreground">Trạng thái</p>
+                              <Badge className={PAYMENT_STATUS_CONFIG[order.payment?.status || "pending"].color}>
+                                {PAYMENT_STATUS_CONFIG[order.payment?.status || "pending"].label}
+                              </Badge>
+                            </div>
+                            {order.payment?.ref && (
+                              <div>
+                                <p className="text-xs text-muted-foreground">Mã tham chiếu</p>
+                                <p className="font-semibold font-mono text-sm">{order.payment.ref}</p>
+                              </div>
+                            )}
+                          </div>
+                        </Card>
 
                         {/* Items */}
                         <div>
@@ -273,7 +394,7 @@ export function OrderListAdmin({ orders }: OrderListAdminProps) {
                           <div className="space-y-3">
                             {Array.isArray(order.items) && order.items.map((item, itemIndex) => (
                               <div key={itemIndex} className="border rounded-lg p-3">
-                                <div className="flex justify-between items-start mb-2">
+                                <div className="flex justify-between items-start">
                                   <div className="flex-1">
                                     <p className="font-medium">{item.name}</p>
                                     <p className="text-sm text-muted-foreground">
@@ -289,20 +410,6 @@ export function OrderListAdmin({ orders }: OrderListAdminProps) {
                                   </div>
                                   <div className="text-right">
                                     <p className="font-semibold">{((item.unitPrice || 0) * (item.quantity || 0)).toLocaleString()}đ</p>
-                                    <Select
-                                      value={item.status || "queued"}
-                                      onValueChange={(value) => handleItemStatusChange(order.id, itemIndex, value as "queued" | "making" | "ready")}
-                                      disabled={updating === `${order.id}-${itemIndex}`}
-                                    >
-                                      <SelectTrigger className="w-32 text-xs">
-                                        <SelectValue />
-                                      </SelectTrigger>
-                                      <SelectContent>
-                                        <SelectItem value="queued">Chờ làm</SelectItem>
-                                        <SelectItem value="making">Đang làm</SelectItem>
-                                        <SelectItem value="ready">Sẵn sàng</SelectItem>
-                                      </SelectContent>
-                                    </Select>
                                   </div>
                                 </div>
                               </div>
@@ -330,13 +437,52 @@ export function OrderListAdmin({ orders }: OrderListAdminProps) {
 
                         {/* Notes */}
                         {order.notes && (
-                          <div className="p-3 bg-yellow-50 rounded-lg">
-                            <p className="text-sm"><strong>Ghi chú:</strong> {order.notes}</p>
-                          </div>
+                          <Card className="p-4 bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200">
+                            <div className="flex items-start gap-2">
+                              <AlertCircle className="h-4 w-4 text-yellow-600 mt-0.5" />
+                              <div>
+                                <p className="font-semibold text-sm mb-1">Ghi chú</p>
+                                <p className="text-sm">{order.notes}</p>
+                              </div>
+                            </div>
+                          </Card>
                         )}
+
+                        {/* Order Status */}
+                        <Card className="p-4">
+                          <h4 className="font-bold text-sm mb-3 flex items-center gap-2">
+                            <FileText className="h-4 w-4" />
+                            Trạng thái đơn hàng
+                          </h4>
+                          <div className="flex items-center gap-2">
+                            {STATUS_CONFIG[order.status] && (
+                              <Badge className={`${STATUS_CONFIG[order.status].color} text-sm px-3 py-1`}>
+                                {(() => {
+                                  const Icon = STATUS_CONFIG[order.status].icon
+                                  return <Icon className="h-4 w-4 mr-2" />
+                                })()}
+                                {STATUS_CONFIG[order.status].label}
+                              </Badge>
+                            )}
+                          </div>
+                        </Card>
                       </div>
                     </DialogContent>
-                  </Dialog>
+                    </Dialog>
+                    
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setDeleteOrderId(order.id)
+                        setDeleteOrderCode(order.code || order.id.slice(0, 8))
+                      }}
+                      disabled={updating === order.id}
+                      className="text-[10px] lg:text-xs text-red-600 hover:text-red-700 h-8 lg:h-9"
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
                 </div>
               </div>
             </Card>
@@ -357,6 +503,28 @@ export function OrderListAdmin({ orders }: OrderListAdminProps) {
           </Card>
         </motion.div>
       )}
+
+      <OrderEditDialog
+        order={editingOrder}
+        open={showEditDialog}
+        onClose={() => {
+          setShowEditDialog(false)
+          setEditingOrder(null)
+        }}
+      />
+
+      <ConfirmDialog
+        open={!!deleteOrderId}
+        onOpenChange={(open) => !open && setDeleteOrderId(null)}
+        title="Xóa đơn hàng"
+        description={`Bạn có chắc chắn muốn xóa đơn hàng #${deleteOrderCode}? Hành động này không thể hoàn tác.`}
+        onConfirm={() => {
+          if (deleteOrderId) {
+            handleDeleteOrder(deleteOrderId)
+            setDeleteOrderId(null)
+          }
+        }}
+      />
     </div>
   )
 }

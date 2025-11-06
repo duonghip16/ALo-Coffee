@@ -24,6 +24,14 @@ export function LoginForm() {
     setLoading(true)
     setError("")
 
+    // Validate phone number
+    const phoneRegex = /^0\d{9}$/
+    if (!phoneRegex.test(phone.trim())) {
+      setError("Số điện thoại phải có 10 số và bắt đầu bằng số 0")
+      setLoading(false)
+      return
+    }
+
     try {
       let user
       if (isSignUp) {
@@ -101,6 +109,9 @@ export function LoginForm() {
               onChange={(e) => setPhone(e.target.value)}
               placeholder="0123456789"
               className="w-full"
+              pattern="0\d{9}"
+              maxLength={10}
+              title="Số điện thoại phải có 10 số và bắt đầu bằng số 0"
               required
             />
           </div>

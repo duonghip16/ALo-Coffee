@@ -47,6 +47,11 @@ export function CheckoutForm() {
         throw new Error("Vui lòng điền đầy đủ thông tin giao hàng")
       }
 
+      const phoneRegex = /^0\d{9}$/
+      if (!phoneRegex.test(phone.trim())) {
+        throw new Error("Số điện thoại phải có 10 số và bắt đầu bằng số 0")
+      }
+
       if (items.length === 0) {
         throw new Error("Giỏ hàng trống")
       }
@@ -164,6 +169,9 @@ export function CheckoutForm() {
               onChange={(e) => setPhone(e.target.value)}
               placeholder="0932653465"
               className="w-full pl-10"
+              pattern="0\d{9}"
+              maxLength={10}
+              title="Số điện thoại phải có 10 số và bắt đầu bằng số 0"
               required
             />
             <Phone className="absolute left-3 top-9 w-4 h-4 text-muted-foreground" />
