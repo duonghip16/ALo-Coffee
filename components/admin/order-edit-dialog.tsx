@@ -84,7 +84,7 @@ export function OrderEditDialog({ order, open, onClose }: OrderEditDialogProps) 
 
   const updateQty = (index: number, delta: number) => {
     const newItems = [...items]
-    newItems[index].quantity = Math.max(1, newItems[index].quantity + delta)
+    newItems[index].quantity = Math.max(1, (newItems[index].quantity || 0) + delta)
     setItems(newItems)
   }
 
@@ -101,7 +101,7 @@ export function OrderEditDialog({ order, open, onClose }: OrderEditDialogProps) 
         productId: product.id,
         name: product.name,
         quantity: 1,
-        unitPrice: product.price,
+        unitPrice: product.price || 0,
         status: "queued" as const
       }])
     }
@@ -127,7 +127,7 @@ export function OrderEditDialog({ order, open, onClose }: OrderEditDialogProps) 
 
     setLoading(true)
     try {
-      const subtotal = items.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0)
+      const subtotal = items.reduce((sum, item) => sum + ((item.unitPrice || 0) * (item.quantity || 0)), 0)
       const orderDoc = doc(db, "orders", order.id)
       
       const updateData: any = {
@@ -172,7 +172,7 @@ export function OrderEditDialog({ order, open, onClose }: OrderEditDialogProps) 
     }
   }
 
-  const total = items.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0)
+  const total = items.reduce((sum, item) => sum + ((item.unitPrice || 0) * (item.quantity || 0)), 0)
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -221,7 +221,7 @@ export function OrderEditDialog({ order, open, onClose }: OrderEditDialogProps) 
                           <div className="flex justify-between items-start mb-2">
                             <div className="flex-1">
                               <p className="font-semibold text-sm">{item.name}</p>
-                              <p className="text-xs text-muted-foreground">{item.unitPrice.toLocaleString()}đ</p>
+                              <p className="text-xs text-muted-foreground">{(item.unitPrice || 0).toLocaleString()}đ</p>
                             </div>
                             <Button variant="ghost" size="sm" onClick={() => removeItem(index)}>
                               <Trash2 className="w-4 h-4 text-red-500" />
@@ -232,12 +232,12 @@ export function OrderEditDialog({ order, open, onClose }: OrderEditDialogProps) 
                               <Button variant="outline" size="sm" onClick={() => updateQty(index, -1)}>
                                 <Minus className="w-3 h-3" />
                               </Button>
-                              <span className="font-bold w-8 text-center">{item.quantity}</span>
+                              <span className="font-bold w-8 text-center">{item.quantity || 0}</span>
                               <Button variant="outline" size="sm" onClick={() => updateQty(index, 1)}>
                                 <Plus className="w-3 h-3" />
                               </Button>
                             </div>
-                            <p className="font-bold text-green-600">{(item.unitPrice * item.quantity).toLocaleString()}đ</p>
+                            <p className="font-bold text-green-600">{((item.unitPrice || 0) * (item.quantity || 0)).toLocaleString()}đ</p>
                           </div>
                         </Card>
                       ))}

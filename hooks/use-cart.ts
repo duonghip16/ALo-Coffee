@@ -6,8 +6,11 @@ export interface CartItem {
   productId: string
   name: string
   price: number
-  imageUrl: string
+  imageUrl?: string
+  images?: string[]
   quantity: number
+  note?: string
+  selectedType?: string
   variant?: {
     id: string
     name: string

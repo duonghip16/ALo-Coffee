@@ -8,6 +8,11 @@ export interface AnalyticsData {
   orders: number
   items: number
   avgOrderValue: number
+  paymentMethods: {
+    total: number
+    cash: number
+    vietqr: number
+  }
   customers: {
     total: number
     new: number
@@ -113,11 +118,24 @@ export async function getAnalytics(startDate: Date, endDate: Date): Promise<Anal
     .map(([date, data]) => ({ date, ...data }))
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 
+  const cashRevenue = paidOrders
+    .filter(o => o.payment?.method === "cash")
+    .reduce((sum, o) => sum + (o.total || 0), 0)
+  
+  const vietqrRevenue = paidOrders
+    .filter(o => o.payment?.method === "vietqr")
+    .reduce((sum, o) => sum + (o.total || 0), 0)
+
   return {
     revenue,
     orders,
     items,
     avgOrderValue,
+    paymentMethods: {
+      total: revenue,
+      cash: cashRevenue,
+      vietqr: vietqrRevenue
+    },
     customers: {
       total: customers.length,
       new: newCustomers.length,

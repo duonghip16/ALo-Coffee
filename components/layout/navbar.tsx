@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useCart } from "@/hooks/use-cart"
 import { useAuth } from "@/context/auth-context"
+import { UserAvatar } from "@/components/admin/user-avatar"
 import { motion } from "framer-motion"
 
 export function Navbar() {
@@ -73,16 +74,29 @@ export function Navbar() {
               </Link>
             </Button>
 
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-[#FEF7ED] hover:text-[#FEF7ED]/80 hover:bg-white/10 h-10 w-10 sm:h-11 sm:w-11"
-              asChild
-            >
-              <Link href={user ? "/profile" : "/auth"}>
-                <User className="w-4 h-4 sm:w-5 sm:h-5" />
+            {user ? (
+              <Link href="/profile">
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <UserAvatar
+                    name={user.name}
+                    email={user.email}
+                    photoURL={user.photoURL}
+                    size="sm"
+                  />
+                </motion.div>
               </Link>
-            </Button>
+            ) : (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-[#FEF7ED] hover:text-[#FEF7ED]/80 hover:bg-white/10 h-10 w-10 sm:h-11 sm:w-11"
+                asChild
+              >
+                <Link href="/auth">
+                  <User className="w-4 h-4 sm:w-5 sm:h-5" />
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
       </div>

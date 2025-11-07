@@ -16,11 +16,14 @@ import { useRouter } from "next/navigation"
 import { ShoppingBag } from "lucide-react"
 import { toast } from "sonner"
 import { createOrder } from "@/lib/firestore-service"
+import { collection, onSnapshot } from "firebase/firestore"
+import { db } from "@/lib/firebase-client"
 
 export default function CheckoutPage() {
   const { items, total, clear } = useCart()
   const { user } = useAuth()
   const router = useRouter()
+  const [availableTables, setAvailableTables] = useState<any[]>([])
 
   useEffect(() => {
     if (!user) {
@@ -28,6 +31,16 @@ export default function CheckoutPage() {
       router.push("/auth")
     }
   }, [user, router])
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "tables"), (snapshot) => {
+      const tables = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      const freeTables = tables.filter((t: any) => t.status === "available")
+      setAvailableTables(freeTables)
+    })
+    return () => unsubscribe()
+  }, [])
+
   const [orderType, setOrderType] = useState<"dine-in" | "takeaway" | "delivery">("takeaway")
   const [paymentMethod, setPaymentMethod] = useState<"cash" | "vietqr">("vietqr")
   const [showQR, setShowQR] = useState(false)
@@ -221,13 +234,29 @@ export default function CheckoutPage() {
 
                       {orderType === "dine-in" && (
                         <div>
-                          <Label htmlFor="table">Số bàn *</Label>
-                          <Input
-                            id="table"
-                            value={tableNumber}
-                            onChange={(e) => setTableNumber(e.target.value)}
-                            placeholder="Ví dụ: B1, B2, B3..."
-                          />
+                          <Label className="text-sm text-[#3A2416] dark:text-[#FEF7ED]">Chọn bàn *</Label>
+                          {availableTables.length > 0 ? (
+                            <div className="grid grid-cols-3 gap-2 mt-2">
+                              {availableTables.map((table) => (
+                                <button
+                                  key={table.id}
+                                  type="button"
+                                  onClick={() => setTableNumber(table.name)}
+                                  className={`p-3 rounded-lg border-2 transition-all text-sm font-semibold ${
+                                    tableNumber === table.name
+                                      ? "border-[#6B4423] bg-[#6B4423] text-white"
+                                      : "border-[#E8DCC8] dark:border-[#6B4423] bg-white dark:bg-[#6B4423] text-[#3A2416] dark:text-white hover:border-[#C47B3E]"
+                                  }`}
+                                >
+                                  {table.name}
+                                </button>
+                              ))}
+                            </div>
+                          ) : (
+                            <p className="text-sm text-red-600 dark:text-red-400 mt-2">
+                              Hiện tại không có bàn trống. Vui lòng chọn "Mang về" hoặc "Giao hàng".
+                            </p>
+                          )}
                         </div>
                       )}
 

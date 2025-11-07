@@ -15,8 +15,8 @@ interface AnalyticsCustomersProps {
 
 export function AnalyticsCustomers({ data }: AnalyticsCustomersProps) {
   const pieData = [
-    { name: "Khách mới", value: data.new, color: "#C47B3E" },
-    { name: "Khách quay lại", value: data.returning, color: "#2D5016" }
+    { name: "Khách mới", value: data.new, color: "#2E6" },
+    { name: "Khách quay lại", value: data.returning, color: "#C47B3E" }
   ]
 
   const stats = [

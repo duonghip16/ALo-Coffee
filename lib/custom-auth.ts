@@ -18,8 +18,10 @@ export interface CustomUser {
   id: string
   name: string
   phone: string
+  email?: string
   passwordHash: string
   avatarUrl?: string
+  photoURL?: string
   role: "customer" | "admin"
   status: "active" | "inactive"
   isArchived: boolean

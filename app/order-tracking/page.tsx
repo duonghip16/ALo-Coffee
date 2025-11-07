@@ -2,15 +2,18 @@
 
 import { useAuth } from "@/context/auth-context"
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useOrders } from "@/hooks/use-orders"
 import { OrderCard } from "@/components/tracking/order-card"
 import { Button } from "@/components/ui/button"
+import { ArrowLeft, ShoppingBag, Package, Clock, CheckCircle2 } from "lucide-react"
+import { motion } from "framer-motion"
 
 export default function OrderTrackingPage() {
   const { user, loading: authLoading } = useAuth()
   const router = useRouter()
   const { orders, loading } = useOrders(user?.id || null)
+  const [filter, setFilter] = useState<"all" | "pending" | "completed">("all")
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -33,50 +36,125 @@ export default function OrderTrackingPage() {
     return null
   }
 
-  return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="bg-white border-b border-border sticky top-0 z-30">
-        <div className="max-w-2xl mx-auto px-4 py-4">
-          <div className="flex items-center gap-4">
-            <button onClick={() => router.back()} className="text-coffee-700 hover:text-coffee-900">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <h1 className="text-2xl font-bold text-coffee-900">Đơn hàng của tôi</h1>
-          </div>
-        </div>
-      </div>
+  const filteredOrders = orders.filter(order => {
+    if (filter === "all") return true
+    if (filter === "pending") return ["pending", "confirmed", "preparing", "ready"].includes(order.status)
+    if (filter === "completed") return order.status === "completed"
+    return true
+  })
 
-      {/* Orders List */}
-      <div className="max-w-2xl mx-auto px-4 py-6">
-        {orders.length === 0 ? (
-          <div className="text-center py-12">
-            <svg
-              className="w-16 h-16 text-muted-foreground mx-auto mb-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+  const stats = {
+    all: orders.length,
+    pending: orders.filter(o => ["pending", "confirmed", "preparing", "ready"].includes(o.status)).length,
+    completed: orders.filter(o => o.status === "completed").length
+  }
+
+  return (
+    <div className="min-h-screen bg-[#FAF6F0] dark:bg-[#1A0F08]">
+      {/* Header */}
+      <motion.div 
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className="bg-linear-to-br from-[#6B4423] to-[#8E5522] dark:from-[#3A2416] dark:to-[#2A1A12] sticky top-0 z-30 shadow-lg"
+      >
+        <div className="max-w-4xl mx-auto px-4 py-6">
+          <div className="flex items-center gap-4 mb-6">
+            <motion.button 
+              whileHover={{ scale: 1.1, x: -2 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => router.back()} 
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 dark:bg-white/5 dark:hover:bg-white/10 text-white transition-colors backdrop-blur-sm"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-              />
-            </svg>
-            <p className="text-muted-foreground mb-4">Bạn chưa có đơn hàng nào</p>
-            <Button onClick={() => router.push("/menu")} className="bg-coffee-700 hover:bg-coffee-900">
-              Đặt hàng ngay
-            </Button>
+              <ArrowLeft className="w-5 h-5" />
+            </motion.button>
+            <div className="flex-1">
+              <h1 className="text-2xl font-bold text-white dark:text-[#FEF7ED] flex items-center gap-2">
+                <ShoppingBag className="w-6 h-6" />
+                Lịch sử đơn hàng
+              </h1>
+              <p className="text-white/90 dark:text-[#E8DCC8] text-sm mt-1">Theo dõi tất cả đơn hàng của bạn</p>
+            </div>
           </div>
-        ) : (
-          <div className="space-y-3">
-            {orders.map((order) => (
-              <OrderCard key={order.id} order={order} />
+
+          {/* Filter Tabs */}
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+            {[
+              { key: "all", label: "Tất cả", icon: Package, count: stats.all },
+              { key: "pending", label: "Đang xử lý", icon: Clock, count: stats.pending },
+              { key: "completed", label: "Hoàn thành", icon: CheckCircle2, count: stats.completed }
+            ].map(({ key, label, icon: Icon, count }) => (
+              <motion.button
+                key={key}
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setFilter(key as any)}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm transition-all whitespace-nowrap ${
+                  filter === key
+                    ? "bg-white dark:bg-[#FEF7ED] text-[#6B4423] dark:text-[#3A2416] shadow-lg"
+                    : "bg-white/10 dark:bg-white/5 text-white dark:text-[#FEF7ED] hover:bg-white/20 dark:hover:bg-white/10 backdrop-blur-sm"
+                }`}
+              >
+                <Icon className="w-4 h-4" />
+                {label}
+                <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
+                  filter === key 
+                    ? "bg-[#6B4423] dark:bg-[#3A2416] text-white dark:text-[#FEF7ED]" 
+                    : "bg-white/20 dark:bg-white/10 text-white dark:text-[#E8DCC8]"
+                }`}>
+                  {count}
+                </span>
+              </motion.button>
             ))}
           </div>
+        </div>
+      </motion.div>
+
+      {/* Orders List */}
+      <div className="max-w-4xl mx-auto px-4 py-6">
+        {filteredOrders.length === 0 ? (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center py-16"
+          >
+            <div className="bg-white dark:bg-[#3A2416] rounded-2xl p-12 shadow-lg border border-[#E8DCC8] dark:border-[#5A3A1F]">
+              <div className="w-20 h-20 bg-[#FEF7ED] dark:bg-[#5A3A1F] rounded-full flex items-center justify-center mx-auto mb-4">
+                <ShoppingBag className="w-10 h-10 text-[#6B4423] dark:text-[#C47B3E]" />
+              </div>
+              <h3 className="text-xl font-bold text-[#2A1A12] dark:text-[#FEF7ED] mb-2">
+                {filter === "all" ? "Chưa có đơn hàng" : filter === "pending" ? "Không có đơn đang xử lý" : "Chưa có đơn hoàn thành"}
+              </h3>
+              <p className="text-[#6B4423]/70 dark:text-[#E8DCC8]/80 mb-6">
+                {filter === "all" ? "Hãy đặt món yêu thích của bạn ngay!" : "Thử chọn bộ lọc khác"}
+              </p>
+              {filter === "all" && (
+                <Button 
+                  onClick={() => router.push("/menu")} 
+                  className="bg-linear-to-r from-[#6B4423] to-[#8E5522] hover:from-[#8E5522] hover:to-[#6B4423] dark:from-[#C47B3E] dark:to-[#8E5522] dark:hover:from-[#8E5522] dark:hover:to-[#6B4423] text-white shadow-lg"
+                >
+                  <ShoppingBag className="w-4 h-4 mr-2" />
+                  Đặt hàng ngay
+                </Button>
+              )}
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="space-y-4"
+          >
+            {filteredOrders.map((order, index) => (
+              <motion.div
+                key={order.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+              >
+                <OrderCard order={order} />
+              </motion.div>
+            ))}
+          </motion.div>
         )}
       </div>
     </div>

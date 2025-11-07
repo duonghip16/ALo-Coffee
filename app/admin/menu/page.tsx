@@ -125,7 +125,7 @@ export default function AdminMenuPage() {
                     setEditingProduct(undefined)
                     setIsFormOpen(true)
                   }}
-                  className="w-full lg:w-auto bg-gradient-to-r from-[#C47B3E] to-[#8E5522] hover:from-[#8E5522] hover:to-[#C47B3E] text-white shadow-lg"
+                  className="w-full lg:w-auto bg-linear-to-r from-[#C47B3E] to-[#8E5522] hover:from-[#8E5522] hover:to-[#C47B3E] text-white shadow-lg"
                 >
                   <PlusCircle className="h-5 w-5 mr-2" />
                   Thêm món mới
@@ -160,7 +160,7 @@ export default function AdminMenuPage() {
                     <TabsTrigger
                       key={cat.id}
                       value={cat.id}
-                      className="flex flex-col lg:flex-row items-center justify-center gap-0.5 lg:gap-2 font-bold text-[9px] lg:text-sm text-[#2A1A12] dark:text-[#E8DCC8] data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#C47B3E] data-[state=active]:to-[#8E5522] data-[state=active]:text-white py-1.5 lg:py-3 px-1 lg:px-3 h-auto min-h-[44px] lg:min-h-[48px]"
+                      className="flex flex-col lg:flex-row items-center justify-center gap-0.5 lg:gap-2 font-bold text-[9px] lg:text-sm text-[#2A1A12] dark:text-[#E8DCC8] data-[state=active]:bg-linear-to-r data-[state=active]:from-[#C47B3E] data-[state=active]:to-[#8E5522] data-[state=active]:text-white py-1.5 lg:py-3 px-1 lg:px-3 h-auto min-h-11 lg:min-h-12"
                     >
                       <Icon className="h-3 w-3 lg:h-4 lg:w-4 shrink-0" />
                       <span className="hidden sm:inline truncate">{cat.label}</span>

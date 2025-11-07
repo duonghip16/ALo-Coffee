@@ -1,15 +1,19 @@
 "use client"
 
+import { useState } from "react"
 import { useAuth } from "@/context/auth-context"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { NotificationToggle } from "./notification-toggle"
+import { AdminAccountDialog } from "./admin-account-dialog"
+import { UserAvatar } from "./user-avatar"
 import { motion } from "framer-motion"
-import { LogOut, User } from "lucide-react"
+import { LogOut } from "lucide-react"
 
 export function AdminHeader() {
   const { user, logout } = useAuth()
   const router = useRouter()
+  const [showAccountDialog, setShowAccountDialog] = useState(false)
 
   const handleLogout = async () => {
     await logout()
@@ -39,11 +43,18 @@ export function AdminHeader() {
             <div className="hidden md:flex items-center gap-2">
               <motion.div 
                 whileHover={{ scale: 1.05 }}
-                className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center"
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setShowAccountDialog(true)}
+                className="cursor-pointer"
               >
-                <User className="h-4 w-4 text-white" />
+                <UserAvatar name={user?.name} email={user?.email} photoURL={user?.photoURL} size="sm" />
               </motion.div>
-              <span className="text-sm text-white/90 max-w-[150px] truncate">{user?.email}</span>
+              <span 
+                onClick={() => setShowAccountDialog(true)}
+                className="text-sm text-white/90 max-w-[150px] truncate cursor-pointer hover:text-white transition-colors"
+              >
+                {user?.email}
+              </span>
             </div>
 
             {/* Logout button */}
@@ -61,6 +72,8 @@ export function AdminHeader() {
           </div>
         </div>
       </div>
+
+      <AdminAccountDialog open={showAccountDialog} onOpenChange={setShowAccountDialog} />
     </motion.div>
   )
 }

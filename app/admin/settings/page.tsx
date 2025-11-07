@@ -34,7 +34,7 @@ export default function AdminSettingsPage() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-background">
+    <div className="flex flex-col h-screen bg-[#FAF6F0] dark:bg-[#EDE3D4]">
       <AdminHeader />
 
       <div className="flex flex-1 overflow-hidden">

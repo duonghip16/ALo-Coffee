@@ -49,7 +49,7 @@ export default function Menu() {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-[#F7EFE5] dark:bg-[#6f5e48] py-8">
+      <div className="min-h-screen bg-[#b6a188] dark:bg-[#6f5e48] py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto space-y-6">
             <div className="text-center mb-4 sm:mb-8 px-4">

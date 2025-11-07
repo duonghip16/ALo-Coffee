@@ -38,6 +38,7 @@ export function WalkinOrderForm({ onSuccess, onCancel }: WalkinOrderFormProps) {
   const [selectedTableId, setSelectedTableId] = useState("")
   const [deliveryAddress, setDeliveryAddress] = useState("")
   const [loading, setLoading] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState<string>("all")
 
   useEffect(() => {
     getAllProducts().then(setProducts)
@@ -46,6 +47,26 @@ export function WalkinOrderForm({ onSuccess, onCancel }: WalkinOrderFormProps) {
       setUsers(usersList.filter(u => u.role === "customer"))
     })
   }, [])
+
+  const categoryMap: Record<string, string> = {
+    "Cà phê": "coffee",
+    "Trà": "tea",
+    "Trà sữa": "smoothie",
+    "Nước ngọt": "beverage",
+    "Khác": "other"
+  }
+  
+  const categories = ["Cà phê", "Trà", "Trà sữa", "Nước ngọt", "Khác"]
+  
+  const filteredProducts = selectedCategory === "all" 
+    ? products 
+    : products.filter(p => {
+        const categoryId = categoryMap[selectedCategory]
+        if (categoryId === "other") {
+          return !['coffee', 'tea', 'smoothie', 'beverage'].includes(p.categoryId)
+        }
+        return p.categoryId === categoryId
+      })
 
   const addItem = (product: Product) => {
     const existingIndex = items.findIndex(i => i.productId === product.id)
@@ -157,35 +178,57 @@ export function WalkinOrderForm({ onSuccess, onCancel }: WalkinOrderFormProps) {
   }
 
   return (
-    <div className="grid md:grid-cols-2 gap-4 h-[600px]">
-      <div>
-        <h3 className="font-bold mb-3">Menu</h3>
-        <ScrollArea className="h-[520px]">
-          <div className="grid grid-cols-2 gap-2">
-            {products.map(product => (
+    <div className="grid md:grid-cols-2 gap-4 h-[calc(85vh-100px)]">
+      <div className="flex flex-col overflow-hidden">
+        <h3 className="font-bold mb-3 shrink-0">Menu</h3>
+        <div className="flex flex-wrap gap-2 mb-3 shrink-0">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => setSelectedCategory("all")}
+            className={`text-xs ${selectedCategory === "all" ? "bg-[#6B4423] text-white border-[#6B4423] hover:bg-[#8B6F47]" : "border-[#E8DCC8] dark:border-[#6B4423]"}`}
+          >
+            Tất cả
+          </Button>
+          {categories.map(cat => (
+            <Button
+              key={cat}
+              size="sm"
+              variant="outline"
+              onClick={() => setSelectedCategory(cat)}
+              className={`text-xs ${selectedCategory === cat ? "bg-[#6B4423] text-white border-[#6B4423] hover:bg-[#8B6F47]" : "border-[#E8DCC8] dark:border-[#6B4423]"}`}
+            >
+              {cat}
+            </Button>
+          ))}
+        </div>
+        <div className="flex-1 overflow-y-scroll">
+          <div className="grid grid-cols-2 gap-2 pr-2 pb-4">
+            {filteredProducts.map(product => (
               <Card
                 key={product.id}
                 className="p-3 cursor-pointer hover:shadow-md transition-all"
                 onClick={() => addItem(product)}
               >
-                <img src={product.imageUrl} alt={product.name} className="w-full h-20 object-cover rounded mb-2" />
+                <img src={product.imageUrl} alt={product.name} className="w-full h-20 object-cover rounded mb-2 border border-[#E8DCC8] dark:border-[#6B4423]" />
                 <p className="font-semibold text-sm">{product.name}</p>
                 <p className="text-xs text-green-600">{product.price.toLocaleString()}đ</p>
               </Card>
             ))}
           </div>
-        </ScrollArea>
+        </div>
       </div>
 
-      <div className="flex flex-col">
-        <div className="mb-3">
+      <div className="flex flex-col overflow-hidden">
+        <div className="mb-3 shrink-0">
           <h3 className="font-bold flex items-center gap-2">
             <ShoppingCart className="w-5 h-5" />
             Đơn hàng lẻ
           </h3>
         </div>
 
-        <div className="space-y-2 mb-3">
+        <div className="flex-1 overflow-y-auto scroll-smooth pr-2">
+        <div className="space-y-2 mb-3 pr-4">
           <div>
             <Label>Loại khách hàng</Label>
             <Select value={customerType} onValueChange={(v: any) => setCustomerType(v)}>
@@ -268,7 +311,7 @@ export function WalkinOrderForm({ onSuccess, onCancel }: WalkinOrderFormProps) {
           )}
         </div>
 
-        <ScrollArea className="flex-1 mb-3">
+        <div className="mb-3">
           {items.length === 0 ? (
             <p className="text-center text-muted-foreground py-8">Chưa có món nào</p>
           ) : (
@@ -300,7 +343,7 @@ export function WalkinOrderForm({ onSuccess, onCancel }: WalkinOrderFormProps) {
               ))}
             </div>
           )}
-        </ScrollArea>
+        </div>
 
         <Card className="p-4 mb-3">
           <div className="flex justify-between items-center text-lg font-bold">
@@ -309,14 +352,15 @@ export function WalkinOrderForm({ onSuccess, onCancel }: WalkinOrderFormProps) {
           </div>
         </Card>
 
-        <div className="grid grid-cols-3 gap-2">
-          <Button variant="outline" onClick={onCancel}>Hủy</Button>
-          <Button onClick={() => handleQuickPay("cash")} disabled={loading}>
+        <div className="grid grid-cols-3 gap-2 mb-4">
+          <Button variant="outline" onClick={onCancel} className="border-[#E8DCC8] dark:border-[#6B4423]">Hủy</Button>
+          <Button onClick={() => handleQuickPay("cash")} disabled={loading} className="bg-[#6B4423] hover:bg-[#8B6F47] text-white">
             Tiền mặt
           </Button>
-          <Button onClick={() => handleQuickPay("vietqr")} disabled={loading} variant="outline">
+          <Button onClick={() => handleQuickPay("vietqr")} disabled={loading} variant="outline" className="border-[#E8DCC8] dark:border-[#6B4423]">
             VietQR
           </Button>
+        </div>
         </div>
       </div>
     </div>

@@ -3,48 +3,35 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
 import { AdminHeader } from "@/components/admin/admin-header"
 import { AdminSidebar } from "@/components/admin/admin-sidebar"
 import { TableGrid } from "@/components/pos/table-grid"
 import { TableForm } from "@/components/pos/table-form"
 import { OrderForm } from "@/components/pos/order-form"
 import { WalkinOrderForm } from "@/components/pos/walkin-order-form"
-import { ActiveOrdersList } from "@/components/pos/active-orders-list"
-import { OrderDetailModal } from "@/components/pos/order-detail-modal"
-import { InvoiceList } from "@/components/pos/invoice-list"
+
 import { QuickActions } from "@/components/pos/quick-actions"
 import { KeyboardShortcuts } from "@/components/pos/keyboard-shortcuts"
 import { OfflineIndicator } from "@/components/pos/offline-indicator"
 import { QuickModeModal } from "@/components/pos/quick-mode-modal"
 import { useTables } from "@/hooks/use-tables"
 import { Plus, Zap } from "lucide-react"
-import type { Table, POSOrder } from "@/lib/types/pos"
+import { motion } from "framer-motion"
+import type { Table } from "@/lib/types/pos"
 
 export default function POSPage() {
   const { tables, loading } = useTables()
-  const [activeTab, setActiveTab] = useState("tables")
   const [showTableForm, setShowTableForm] = useState(false)
   const [showOrderForm, setShowOrderForm] = useState(false)
   const [showWalkinForm, setShowWalkinForm] = useState(false)
   const [showQuickMode, setShowQuickMode] = useState(false)
   const [selectedTable, setSelectedTable] = useState<Table | null>(null)
-  const [selectedOrder, setSelectedOrder] = useState<POSOrder | null>(null)
-  const [showOrderDetail, setShowOrderDetail] = useState(false)
 
-  const handleSelectTable = async (table: Table) => {
+  const handleSelectTable = (table: Table) => {
     setSelectedTable(table)
     if (table.status === "available") {
       setShowOrderForm(true)
-    } else if (table.status === "serving" && table.currentOrderId) {
-      // Hiển thị chi tiết đơn hàng của bàn
-      const { getDoc, doc } = await import("firebase/firestore")
-      const { db } = await import("@/lib/firebase-client")
-      const orderDoc = await getDoc(doc(db, "orders", table.currentOrderId))
-      if (orderDoc.exists()) {
-        setSelectedOrder({ id: orderDoc.id, ...orderDoc.data() } as any)
-        setShowOrderDetail(true)
-      }
     }
   }
 
@@ -66,48 +53,40 @@ export default function POSPage() {
               onCreateWalkin={() => setShowWalkinForm(true)}
               onRefresh={() => window.location.reload()}
             />
-            <div className="mb-6">
-              <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-[#2A1A12] dark:text-[#4e3521]">Hệ thống POS</h1>
-                <div className="flex gap-2">
-                  <Button onClick={() => setShowQuickMode(true)} variant="outline" className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white border-0">
-                    <Zap className="w-4 h-4 mr-2" />
-                    Quick Mode
-                  </Button>
-                  <Button onClick={() => setShowTableForm(true)}>
-                    <Plus className="w-4 h-4 mr-2" />
-                    Thêm bàn
-                  </Button>
-                </div>
+            <motion.div 
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ type: "spring", stiffness: 100 }}
+              className="mb-6"
+            >
+              <div className="bg-white dark:bg-[#3d2817] rounded-2xl p-4 lg:p-6 shadow-xl border-2 border-[#E8DCC8] dark:border-[#6B4423]">
+                <motion.h1 
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-2xl lg:text-4xl font-black text-[#2A1A12] dark:text-[#FFF9F0]" 
+                  style={{ fontFamily: 'Playfair Display, serif' }}
+                >
+                  💳 Hệ thống POS
+                </motion.h1>
               </div>
-            </div>
+            </motion.div>
 
       <QuickActions
+        onQuickMode={() => setShowQuickMode(true)}
         onCreateWalkin={() => setShowWalkinForm(true)}
-        onViewOrders={() => setActiveTab("orders")}
-        onViewInvoices={() => setActiveTab("invoices")}
+        onAddTable={() => setShowTableForm(true)}
         onRefresh={() => window.location.reload()}
       />
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-6">
-        <TabsList>
-          <TabsTrigger value="tables">Bàn ({tables.length})</TabsTrigger>
-          <TabsTrigger value="orders">Đơn hàng</TabsTrigger>
-          <TabsTrigger value="invoices">Hóa đơn</TabsTrigger>
-        </TabsList>
-        <TabsContent value="tables" className="mt-4">
-          <TableGrid tables={tables} onSelectTable={handleSelectTable} />
-        </TabsContent>
-        <TabsContent value="orders" className="mt-4">
-          <ActiveOrdersList onSelectOrder={(order) => {
-            setSelectedOrder(order)
-            setShowOrderDetail(true)
-          }} />
-        </TabsContent>
-        <TabsContent value="invoices" className="mt-4">
-          <InvoiceList />
-        </TabsContent>
-      </Tabs>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="mt-6"
+      >
+        <TableGrid tables={tables} onSelectTable={handleSelectTable} />
+      </motion.div>
 
       <Dialog open={showTableForm} onOpenChange={setShowTableForm}>
         <DialogContent>
@@ -144,25 +123,18 @@ export default function POSPage() {
         </DialogContent>
       </Dialog>
 
-      <OrderDetailModal
-        order={selectedOrder}
-        open={showOrderDetail}
-        onClose={() => {
-          setShowOrderDetail(false)
-          setSelectedOrder(null)
-        }}
-      />
-
       <Dialog open={showWalkinForm} onOpenChange={setShowWalkinForm}>
-        <DialogContent className="max-w-4xl">
-          <DialogHeader>
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden flex flex-col bg-[#d8c1a3] dark:bg-[#312316]">
+          <DialogHeader className="shrink-0">
             <DialogTitle>Tạo đơn hàng lẻ</DialogTitle>
             <DialogDescription>Tạo đơn hàng mang đi hoặc giao hàng</DialogDescription>
           </DialogHeader>
-          <WalkinOrderForm
-            onSuccess={() => setShowWalkinForm(false)}
-            onCancel={() => setShowWalkinForm(false)}
-          />
+          <div className="flex-1 overflow-hidden">
+            <WalkinOrderForm
+              onSuccess={() => setShowWalkinForm(false)}
+              onCancel={() => setShowWalkinForm(false)}
+            />
+          </div>
         </DialogContent>
       </Dialog>
 

@@ -6,7 +6,7 @@ import { Search, Edit, Lock, Unlock, Trash2, KeyRound } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { UserAvatar } from "@/components/admin/user-avatar"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import { doc, updateDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase-client"
@@ -97,12 +97,12 @@ export function UserListAdmin({ users, onEdit }: UserListAdminProps) {
                     className="border-t border-[#E8DCC8] dark:border-[#7B5433] hover:bg-[#FEF7ED] dark:hover:bg-[#7B5433] transition-colors"
                   >
                     <td className="px-2 lg:px-4 py-2 lg:py-3">
-                      <Avatar className="h-8 w-8 lg:h-10 lg:w-10">
-                        <AvatarImage src={user.avatarUrl} />
-                        <AvatarFallback className="bg-[#C47B3E] text-white text-xs lg:text-sm">
-                          {user.name.charAt(0).toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
+                      <UserAvatar
+                        name={user.name}
+                        photoURL={user.avatarUrl}
+                        size="sm"
+                        className="lg:w-10 lg:h-10"
+                      />
                     </td>
                     <td className="px-2 lg:px-4 py-2 lg:py-3 font-medium text-xs lg:text-sm text-[#2A1A12] dark:text-white">
                       {user.name}

@@ -38,7 +38,7 @@ export function MenuCard({ product, index = 0 }: MenuCardProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: index * 0.05, duration: 0.3 }}
       >
-        <Card className="overflow-hidden hover:shadow-xl transition-all group cursor-pointer">
+        <Card className="overflow-hidden hover:shadow-xl transition-all group cursor-pointer bg-[#d1ac7b] dark:bg-card border-[#E8DCC8] dark:border-border">
           <div 
             className="relative aspect-square bg-muted overflow-hidden"
             onClick={() => setShowModal(true)}
@@ -87,7 +87,10 @@ export function MenuCard({ product, index = 0 }: MenuCardProps) {
       </motion.div>
 
       <ProductDetailModal
-        product={product}
+        product={{
+          ...product,
+          rating: product.rating || 0
+        }}
         open={showModal}
         onClose={() => setShowModal(false)}
       />

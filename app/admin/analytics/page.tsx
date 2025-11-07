@@ -12,6 +12,7 @@ import { AnalyticsChart } from "@/components/admin/analytics-chart"
 import { AnalyticsCustomers } from "@/components/admin/analytics-customers"
 import { AnalyticsTopProducts } from "@/components/admin/analytics-top-products"
 import { AnalyticsDateFilter } from "@/components/admin/analytics-date-filter"
+import { AnalyticsPaymentChart } from "@/components/admin/analytics-payment-chart"
 import { getVietnamTime } from "@/lib/date-utils"
 import { ThemeToggle } from "@/components/theme-toggle"
 
@@ -74,28 +75,50 @@ export default function AdminAnalyticsPage() {
         <main className="flex-1 overflow-auto ml-20 lg:ml-64">
           <div className="max-w-7xl mx-auto px-3 lg:px-6 py-4 lg:py-8">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-4 lg:mb-6"
+              transition={{ type: "spring", stiffness: 100 }}
+              className="mb-6 lg:mb-8"
             >
-              <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3">
-                <div>
-                  <h2 className="text-lg lg:text-3xl font-extrabold text-[#2A1A12] dark:text-[#4e3521] mb-1 lg:mb-2 tracking-wide" style={{ fontFamily: 'Playfair Display, serif' }}>Thống kê</h2>
-                  <p className="text-xs lg:text-sm font-semibold text-[#2A1A12] dark:text-[#4e3521]">Phân tích doanh thu và hiệu suất kinh doanh</p>
-                </div>
-                <AnalyticsDateFilter dateRange={dateRange} onChange={setDateRange} />
+              <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 bg-white dark:bg-[#3d2817] rounded-2xl p-4 lg:p-6 shadow-xl border-2 border-[#E8DCC8] dark:border-[#6B4423]">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <h2 className="text-xl lg:text-4xl font-black text-[#2A1A12] dark:text-[#FFF9F0] mb-1 lg:mb-2 tracking-tight" style={{ fontFamily: 'Playfair Display, serif' }}>📊 Thống kê</h2>
+                  <p className="text-xs lg:text-base font-bold text-[#6B4423] dark:text-[#E8DCC8]">Phân tích doanh thu và hiệu suất kinh doanh</p>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <AnalyticsDateFilter dateRange={dateRange} onChange={setDateRange} />
+                </motion.div>
               </div>
             </motion.div>
 
             {analytics && (
-              <div className="space-y-3 lg:space-y-6">
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="space-y-4 lg:space-y-6"
+              >
                 <AnalyticsKPI data={analytics} />
                 <AnalyticsChart data={analytics.chartData} />
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <AnalyticsPaymentChart data={analytics.paymentMethods} />
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8 }}
+                  className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+                >
                   <AnalyticsCustomers data={analytics.customers} />
                   <AnalyticsTopProducts products={analytics.topProducts} />
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             )}
           </div>
         </main>

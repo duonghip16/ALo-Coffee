@@ -55,14 +55,14 @@ export function FeaturedProducts() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
             >
-              <Card className="overflow-hidden hover:shadow-xl transition-shadow group cursor-pointer">
+              <Card className="overflow-hidden hover:shadow-xl transition-shadow group cursor-pointer bg-[#ad8249] dark:bg-card border-[#E8DCC8] dark:border-border">
                 <div className="relative aspect-square overflow-hidden bg-muted">
                   <img
                     src={product.images?.[0] || product.imageUrl || "/placeholder.jpg"}
                     alt={product.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
-                  <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <div className="absolute top-2 right-2 bg-black/90 backdrop-blur-sm px-2 py-0.5 rounded-full flex items-center gap-1">
                     <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-yellow-400 text-yellow-400" />
                   </div>
                 </div>
@@ -90,6 +90,8 @@ export function FeaturedProducts() {
                           productId: product.id,
                           name: product.name,
                           price: product.price,
+                          imageUrl: product.imageUrl,
+                          images: product.images,
                           quantity: 1
                         })
                         toast.success(`Đã thêm ${product.name} vào giỏ hàng`)
@@ -114,7 +116,7 @@ export function FeaturedProducts() {
           <Button
             size="lg"
             onClick={() => router.push("/menu")}
-            className="rounded-full px-8 text-[#6f5e48]"
+            className="rounded-full px-8 text-[#0a0806]"
           >
             Xem toàn bộ menu
           </Button>

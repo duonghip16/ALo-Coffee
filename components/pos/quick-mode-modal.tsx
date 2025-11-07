@@ -71,10 +71,10 @@ export function QuickModeModal({ open, onClose }: QuickModeModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl h-[80vh] p-0">
+      <DialogContent className="max-w-4xl h-[80vh] p-0 flex flex-col overflow-hidden">
         <DialogTitle className="sr-only">Quick Mode - Bước {step}/3</DialogTitle>
         <div className="flex flex-col h-full">
-          <div className="p-4 border-b flex justify-between items-center">
+          <div className="p-4 border-b flex justify-between items-center shrink-0">
             <h2 className="text-xl font-bold">Quick Mode - {step}/3</h2>
             <Button variant="ghost" size="sm" onClick={onClose}>
               <X className="w-5 h-5" />
@@ -82,7 +82,7 @@ export function QuickModeModal({ open, onClose }: QuickModeModalProps) {
           </div>
 
           {step === 1 && (
-            <div className="flex-1 overflow-auto p-4">
+            <div className="flex-1 overflow-y-auto scroll-smooth p-4">
               <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
                 {products.map(product => {
                   const qty = selectedItems.get(product.id) || 0
@@ -112,15 +112,20 @@ export function QuickModeModal({ open, onClose }: QuickModeModalProps) {
           )}
 
           {step === 2 && (
-            <div className="flex-1 overflow-auto p-4">
+            <div className="flex-1 overflow-y-auto scroll-smooth p-4">
               <div className="space-y-2">
                 {Array.from(selectedItems.entries()).map(([id, qty]) => {
                   const product = products.find(p => p.id === id)!
                   return (
-                    <Card key={id} className="p-4 flex justify-between items-center">
-                      <div>
+                    <Card key={id} className="p-4 flex items-center gap-4">
+                      <img 
+                        src={product.imageUrl || product.images?.[0] || "/placeholder.jpg"} 
+                        alt={product.name} 
+                        className="w-16 h-16 object-cover rounded" 
+                      />
+                      <div className="flex-1">
                         <p className="font-semibold">{product.name}</p>
-                        <p className="text-sm text-muted-foreground">x{qty}</p>
+                        <p className="text-sm text-muted-foreground">x{qty} × {product.price.toLocaleString()}đ</p>
                       </div>
                       <p className="font-bold text-green-600">{(product.price * qty).toLocaleString()}đ</p>
                     </Card>
@@ -152,7 +157,7 @@ export function QuickModeModal({ open, onClose }: QuickModeModalProps) {
             </div>
           )}
 
-          <div className="p-4 border-t flex justify-between items-center">
+          <div className="p-4 border-t flex justify-between items-center shrink-0 bg-background">
             <div className="text-lg font-bold">
               {selectedItems.size} món - {total.toLocaleString()}đ
             </div>

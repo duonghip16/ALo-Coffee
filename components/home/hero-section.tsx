@@ -45,7 +45,7 @@ export function HeroSection() {
             className="text-lg sm:text-xl md:text-2xl text-white/70 dark:text-white/80 mb-6 sm:mb-8 leading-relaxed px-4"
           >
             Nơi bạn dừng chân giữa Sài Gòn nhộn nhịp<br />
-            để tìm lại một khoảnh khắc thanh thản
+            để tìm lại một khoảnh khắc bình yên
           </motion.p>
 
           <motion.div

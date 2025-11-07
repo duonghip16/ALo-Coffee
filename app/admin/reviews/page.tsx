@@ -42,8 +42,8 @@ export default function AdminReviewsPage() {
     const unsubReviews = onSnapshot(
       collection(db, "reviews"),
       (snapshot) => {
-        const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-        setReviews(data.sort((a, b) => {
+        const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as any[]
+        setReviews(data.sort((a: any, b: any) => {
           const aTime = a.createdAt?.toDate?.() || new Date(a.createdAt || 0)
           const bTime = b.createdAt?.toDate?.() || new Date(b.createdAt || 0)
           return bTime.getTime() - aTime.getTime()
@@ -58,8 +58,8 @@ export default function AdminReviewsPage() {
     const unsubMessages = onSnapshot(
       collection(db, "messages"),
       (snapshot) => {
-        const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-        setMessages(data.sort((a, b) => {
+        const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as any[]
+        setMessages(data.sort((a: any, b: any) => {
           const aTime = a.createdAt?.toDate?.() || new Date(a.createdAt || 0)
           const bTime = b.createdAt?.toDate?.() || new Date(b.createdAt || 0)
           return bTime.getTime() - aTime.getTime()
@@ -137,7 +137,7 @@ export default function AdminReviewsPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-[#FAF6F0] dark:bg-[#2A1A12]">
+      <div className="flex items-center justify-center min-h-screen bg-[#FAF6F0] dark:bg-[#EDE3D4]">
         <div className="text-center">
           <motion.div
             animate={{ rotate: 360 }}
@@ -153,7 +153,7 @@ export default function AdminReviewsPage() {
   if (!user) return null
 
   return (
-    <div className="min-h-screen bg-[#FAF6F0] dark:bg-[#2A1A12]">
+    <div className="min-h-screen bg-[#FAF6F0] dark:bg-[#EDE3D4]">
       <AdminHeader />
       <div className="flex">
         <AdminSidebar />
@@ -178,7 +178,7 @@ export default function AdminReviewsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
                 whileHover={{ scale: 1.05, y: -5 }}
-                className="bg-gradient-to-br from-[#C47B3E] to-[#8E5522] rounded-xl p-4 text-white shadow-lg cursor-pointer"
+                className="bg-linear-to-br from-[#C47B3E] to-[#8E5522] rounded-xl p-4 text-white shadow-lg cursor-pointer"
               >
                 <motion.div
                   animate={{ rotate: [0, 10, -10, 0] }}
@@ -202,7 +202,7 @@ export default function AdminReviewsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
                 whileHover={{ scale: 1.05, y: -5 }}
-                className="bg-gradient-to-br from-[#F4A460] to-[#D2691E] rounded-xl p-4 text-white shadow-lg cursor-pointer"
+                className="bg-linear-to-br from-[#F4A460] to-[#D2691E] rounded-xl p-4 text-white shadow-lg cursor-pointer"
               >
                 <motion.div
                   animate={{ scale: [1, 1.2, 1] }}
@@ -219,7 +219,7 @@ export default function AdminReviewsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
                 whileHover={{ scale: 1.05, y: -5 }}
-                className="bg-gradient-to-br from-[#FFB347] to-[#FF8C00] rounded-xl p-4 text-white shadow-lg cursor-pointer"
+                className="bg-linear-to-br from-[#FFB347] to-[#FF8C00] rounded-xl p-4 text-white shadow-lg cursor-pointer"
               >
                 <motion.div
                   animate={{ rotate: 360 }}
@@ -243,7 +243,7 @@ export default function AdminReviewsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
                 whileHover={{ scale: 1.05, y: -5 }}
-                className="bg-gradient-to-br from-[#5C8A64] to-[#3d5a42] rounded-xl p-4 text-white shadow-lg cursor-pointer"
+                className="bg-linear-to-br from-[#5C8A64] to-[#3d5a42] rounded-xl p-4 text-white shadow-lg cursor-pointer"
               >
                 <motion.div
                   animate={{ scale: [1, 1.1, 1] }}
@@ -267,7 +267,7 @@ export default function AdminReviewsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
                 whileHover={{ scale: 1.05, y: -5 }}
-                className="bg-gradient-to-br from-[#8B6F47] to-[#6B4423] rounded-xl p-4 text-white shadow-lg cursor-pointer"
+                className="bg-linear-to-br from-[#8B6F47] to-[#6B4423] rounded-xl p-4 text-white shadow-lg cursor-pointer"
               >
                 <motion.div
                   animate={{ y: [0, -5, 0] }}
@@ -486,7 +486,7 @@ export default function AdminReviewsPage() {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: "spring", stiffness: 200 }}
-                  className="w-16 h-16 rounded-full bg-gradient-to-br from-[#C47B3E] to-[#8E5522] flex items-center justify-center text-white font-bold text-2xl shadow-lg"
+                  className="w-16 h-16 rounded-full bg-linear-to-br from-[#C47B3E] to-[#8E5522] flex items-center justify-center text-white font-bold text-2xl shadow-lg"
                 >
                   {selectedReview.userName?.charAt(0).toUpperCase()}
                 </motion.div>
@@ -555,7 +555,7 @@ export default function AdminReviewsPage() {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: "spring", stiffness: 200 }}
-                  className="w-16 h-16 rounded-full bg-gradient-to-br from-[#8B6F47] to-[#6B4423] flex items-center justify-center text-white font-bold text-2xl shadow-lg"
+                  className="w-16 h-16 rounded-full bg-linear-to-br from-[#8B6F47] to-[#6B4423] flex items-center justify-center text-white font-bold text-2xl shadow-lg"
                 >
                   {selectedMessage.name?.charAt(0).toUpperCase()}
                 </motion.div>

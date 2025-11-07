@@ -132,8 +132,8 @@ export default function AdminDashboard() {
                       transition={{ duration: 0.2 }}
                       className={`relative px-2 lg:px-5 py-1.5 lg:py-2.5 rounded-lg lg:rounded-xl text-[10px] lg:text-sm font-bold transition-all duration-300 whitespace-nowrap ${
                         filterStatus === status
-                          ? "bg-gradient-to-r from-[#6B4423] to-[#4e3521] text-white shadow-md"
-                          : "text-[#2A1A12] dark:text-[#FFF9F0] hover:text-[#B26A36] hover:bg-[#FAF6F0] dark:hover:bg-[#3A2416]"
+                          ? "bg-linear-to-r from-[#6B4423] to-[#4e3521] text-white shadow-md"
+                          : "text-[#ffffff] dark:text-[#FFF9F0] hover:text-[#B26A36] hover:bg-[#FAF6F0] dark:hover:bg-[#3A2416]"
                       }`}
                     >
                       <span className="relative z-10">

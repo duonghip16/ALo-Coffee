@@ -177,10 +177,10 @@ export function MenuForm({ product, onSuccess, onCancel }: MenuFormProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="p-6 bg-white">
+      <Card className="p-6 bg-white dark:bg-[#3A2C20] border-[#E8DCC8] dark:border-[#6B4423]">
         <div className="flex items-center gap-2 mb-6">
-          <Coffee className="h-5 w-5 text-coffee-700" />
-          <h3 className="text-xl font-semibold text-coffee-900">
+          <Coffee className="h-5 w-5 text-[#6B4423] dark:text-[#E8DCC8]" />
+          <h3 className="text-xl font-semibold text-[#2A1A12] dark:text-[#FFF9F0]">
             {product ? "Chỉnh sửa sản phẩm" : "Thêm sản phẩm mới"}
           </h3>
         </div>
@@ -195,7 +195,7 @@ export function MenuForm({ product, onSuccess, onCancel }: MenuFormProps) {
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium text-coffee-900 mb-2 flex items-center gap-2">
+                <label className="text-sm font-bold text-[#2A1A12] dark:text-[#FFF9F0] mb-2 flex items-center gap-2">
                   <Tag className="h-4 w-4" />
                   Tên sản phẩm
                 </label>
@@ -205,12 +205,12 @@ export function MenuForm({ product, onSuccess, onCancel }: MenuFormProps) {
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Cà phê đen nóng"
                   required
-                  className="transition-all focus:ring-2 focus:ring-coffee-500"
+                  className="bg-white dark:bg-[#2A1A12] text-[#2A1A12] dark:text-[#FFF9F0] border-[#E8DCC8] dark:border-[#6B4423]"
                 />
               </div>
 
               <div>
-                <label className="text-sm font-medium text-coffee-900 mb-2 flex items-center gap-2">
+                <label className="text-sm font-bold text-[#2A1A12] dark:text-[#FFF9F0] mb-2 flex items-center gap-2">
                   <DollarSign className="h-4 w-4" />
                   Giá cơ bản (đ)
                 </label>
@@ -224,28 +224,28 @@ export function MenuForm({ product, onSuccess, onCancel }: MenuFormProps) {
                   placeholder="12000"
                   min="0"
                   required
-                  className="transition-all focus:ring-2 focus:ring-coffee-500"
+                  className="bg-white dark:bg-[#2A1A12] text-[#2A1A12] dark:text-[#FFF9F0] border-[#E8DCC8] dark:border-[#6B4423]"
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-sm font-medium text-coffee-900 mb-2">Mô tả</label>
+              <label className="text-sm font-bold text-[#2A1A12] dark:text-[#FFF9F0] mb-2">Mô tả</label>
               <Textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Mô tả chi tiết về sản phẩm"
                 required
                 rows={3}
-                className="transition-all focus:ring-2 focus:ring-coffee-500"
+                className="bg-white dark:bg-[#2A1A12] text-[#2A1A12] dark:text-[#FFF9F0] border-[#E8DCC8] dark:border-[#6B4423]"
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium text-coffee-900 mb-2">Danh mục</label>
+                <label className="text-sm font-bold text-[#2A1A12] dark:text-[#FFF9F0] mb-2">Danh mục</label>
                 <Select value={category} onValueChange={setCategory}>
-                  <SelectTrigger className="transition-all focus:ring-2 focus:ring-coffee-500">
+                  <SelectTrigger className="bg-white dark:bg-[#2A1A12] text-[#2A1A12] dark:text-[#FFF9F0] border-[#E8DCC8] dark:border-[#6B4423]">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -259,16 +259,16 @@ export function MenuForm({ product, onSuccess, onCancel }: MenuFormProps) {
               </div>
 
               <div>
-                <label className="text-sm font-medium text-coffee-900 mb-2">Trạng thái</label>
+                <label className="text-sm font-bold text-[#2A1A12] dark:text-[#FFF9F0] mb-2">Trạng thái</label>
                 <div className="flex items-center gap-4">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={available}
                       onChange={(e) => setAvailable(e.target.checked)}
-                      className="w-4 h-4 rounded border-border text-coffee-600 focus:ring-coffee-500"
+                      className="w-4 h-4 rounded border-border text-[#6B4423] focus:ring-[#6B4423]"
                     />
-                    <span className="text-sm">Có sẵn</span>
+                    <span className="text-sm font-semibold text-[#2A1A12] dark:text-[#FFF9F0]">Có sẵn</span>
                   </label>
                   <Badge variant={available ? "default" : "secondary"} className="text-xs">
                     {available ? "Đang bán" : "Tạm ngừng"}
@@ -286,7 +286,7 @@ export function MenuForm({ product, onSuccess, onCancel }: MenuFormProps) {
             className="border-t pt-6"
           >
             <div className="flex items-center justify-between mb-4">
-              <h4 className="text-lg font-medium text-coffee-900">Biến thể (Size)</h4>
+              <h4 className="text-lg font-bold text-[#2A1A12] dark:text-[#FFF9F0]">Biến thể (Size)</h4>
               <Button
                 type="button"
                 variant="outline"
@@ -306,7 +306,7 @@ export function MenuForm({ product, onSuccess, onCancel }: MenuFormProps) {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
-                  className="flex items-center gap-3 p-3 border rounded-lg bg-muted/30"
+                  className="flex items-center gap-3 p-3 border border-[#E8DCC8] dark:border-[#6B4423] rounded-lg bg-[#F5EFE7] dark:bg-[#2A1A12]"
                 >
                   <div className="flex-1 grid grid-cols-2 gap-3">
                     <Input
@@ -346,8 +346,8 @@ export function MenuForm({ product, onSuccess, onCancel }: MenuFormProps) {
           >
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <Upload className="h-5 w-5 text-coffee-700" />
-                <h4 className="text-lg font-medium text-coffee-900">Ảnh sản phẩm</h4>
+                <Upload className="h-5 w-5 text-[#6B4423] dark:text-[#E8DCC8]" />
+                <h4 className="text-lg font-bold text-[#2A1A12] dark:text-[#FFF9F0]">Ảnh sản phẩm</h4>
               </div>
               <span className="text-sm text-muted-foreground">{images.filter(img => img).length}/5 ảnh</span>
             </div>
@@ -365,13 +365,13 @@ export function MenuForm({ product, onSuccess, onCancel }: MenuFormProps) {
                   />
                   <label
                     htmlFor="image-upload"
-                    className="flex items-center gap-2 px-4 py-2 border border-dashed border-coffee-300 rounded-lg cursor-pointer hover:bg-coffee-50 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 border border-dashed border-[#6B4423] dark:border-[#E8DCC8] rounded-lg cursor-pointer hover:bg-[#F5EFE7] dark:hover:bg-[#3A2C20] transition-colors"
                   >
-                    <Upload className="h-4 w-4 text-coffee-600" />
-                    <span className="text-sm text-coffee-700">Chọn ảnh (tối đa 5)</span>
+                    <Upload className="h-4 w-4 text-[#6B4423] dark:text-[#E8DCC8]" />
+                    <span className="text-sm font-semibold text-[#2A1A12] dark:text-[#FFF9F0]">Chọn ảnh (tối đa 5)</span>
                   </label>
                   {uploadingImage && (
-                    <span className="text-sm text-coffee-600">Đang tải lên...</span>
+                    <span className="text-sm font-semibold text-[#6B4423] dark:text-[#E8DCC8]">Đang tải lên...</span>
                   )}
                 </div>
               )}
@@ -411,7 +411,7 @@ export function MenuForm({ product, onSuccess, onCancel }: MenuFormProps) {
             className="border-t pt-6"
           >
             <div className="mb-4">
-              <h4 className="text-lg font-medium text-coffee-900 mb-2">Tùy chọn</h4>
+              <h4 className="text-lg font-bold text-[#2A1A12] dark:text-[#FFF9F0] mb-2">Tùy chọn</h4>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {[0, 1, 2].map((index) => (
                   <Input
@@ -444,7 +444,7 @@ export function MenuForm({ product, onSuccess, onCancel }: MenuFormProps) {
                 animate={{ opacity: 1, scale: 1 }}
                 className="mb-4"
               >
-                <Card className="p-3 bg-destructive/10 border-destructive/20">
+                <Card className="p-3 bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800">
                   <p className="text-sm text-destructive">{error}</p>
                 </Card>
               </motion.div>
@@ -465,7 +465,7 @@ export function MenuForm({ product, onSuccess, onCancel }: MenuFormProps) {
               <Button
                 type="submit"
                 disabled={loading}
-                className="flex-1 bg-gradient-to-r from-[#C47B3E] to-[#8E5522] hover:from-[#8E5522] hover:to-[#C47B3E] text-white"
+                className="flex-1 bg-linear-to-r from-[#C47B3E] to-[#8E5522] hover:from-[#8E5522] hover:to-[#C47B3E] text-white"
               >
                 {loading ? "Đang lưu..." : product ? "Cập nhật" : "Thêm mới"}
               </Button>

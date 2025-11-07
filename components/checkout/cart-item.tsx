@@ -9,8 +9,11 @@ interface CartItemProps {
     id: string
     name: string
     price: number
-    imageUrl: string
+    imageUrl?: string
+    images?: string[]
     quantity: number
+    note?: string
+    selectedType?: string
     size?: string
     toppings?: string[]
   }
@@ -21,22 +24,32 @@ export function CartItem({ item }: CartItemProps) {
 
   const itemTotal = item.price * item.quantity
 
+  const imageUrl = item.images?.[0] || item.imageUrl || "/placeholder.jpg"
+
   return (
     <div className="flex gap-4 p-4 bg-white dark:bg-[#8B6F47] rounded-lg border border-[#E8DCC8] dark:border-[#6B4423]">
       <img
-        src={item.imageUrl}
+        src={imageUrl}
         alt={item.name}
         className="w-20 h-20 object-cover rounded-lg"
       />
 
       <div className="flex-1">
         <h3 className="font-semibold text-[#3A2416] dark:text-[#FEF7ED]">{item.name}</h3>
+        {item.selectedType && (
+          <p className="text-sm text-[#3A2416]/70 dark:text-[#FEF7ED]/80">{item.selectedType}</p>
+        )}
         {item.size && (
           <p className="text-sm text-[#3A2416]/70 dark:text-[#FEF7ED]/80">Size: {item.size}</p>
         )}
         {item.toppings && item.toppings.length > 0 && (
           <p className="text-sm text-[#3A2416]/70 dark:text-[#FEF7ED]/80">
             Topping: {item.toppings.join(", ")}
+          </p>
+        )}
+        {item.note && (
+          <p className="text-sm text-[#6B4423] dark:text-[#E8DCC8] italic">
+            Ghi chú: {item.note}
           </p>
         )}
         <p className="text-lg font-bold text-[#6B4423] dark:text-[#FEF7ED] mt-1">

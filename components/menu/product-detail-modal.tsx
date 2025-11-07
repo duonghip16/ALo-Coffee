@@ -13,9 +13,11 @@ interface ProductDetailModalProps {
     id: string
     name: string
     price: number
-    imageUrl: string
+    imageUrl?: string
+    images?: string[]
     description: string
     rating: number
+    types?: string
     sizes?: Array<{ name: string; priceDiff: number }>
     toppings?: Array<{ name: string; price: number }>
   }
@@ -28,6 +30,9 @@ export function ProductDetailModal({ product, open, onClose }: ProductDetailModa
   const [quantity, setQuantity] = useState(1)
   const [selectedSize, setSelectedSize] = useState(product.sizes?.[0]?.name || "")
   const [selectedToppings, setSelectedToppings] = useState<string[]>([])
+  const [note, setNote] = useState("")
+  const productTypes = product.types?.split(',').map(t => t.trim()).filter(t => t) || []
+  const [selectedType, setSelectedType] = useState(productTypes[0] || "")
 
   const calculateTotal = () => {
     let total = product.price
@@ -59,12 +64,15 @@ export function ProductDetailModal({ product, open, onClose }: ProductDetailModa
     })
 
     addItem({
-      id: `${product.id}-${selectedSize}-${selectedToppings.sort().join('-')}`,
+      id: `${product.id}-${selectedSize}-${selectedType}-${selectedToppings.sort().join('-')}-${Date.now()}`,
       productId: product.id,
       name: product.name,
       price: product.price,
       imageUrl: product.imageUrl,
+      images: product.images,
       quantity,
+      note: note.trim() || undefined,
+      selectedType: selectedType || undefined,
       variant: sizeData ? {
         id: selectedSize,
         name: selectedSize,
@@ -76,6 +84,8 @@ export function ProductDetailModal({ product, open, onClose }: ProductDetailModa
     onClose()
     setQuantity(1)
     setSelectedToppings([])
+    setNote("")
+    setSelectedType(productTypes[0] || "")
   }
 
   const toggleTopping = (toppingName: string) => {
@@ -99,7 +109,7 @@ export function ProductDetailModal({ product, open, onClose }: ProductDetailModa
           <div className="flex sm:block gap-2 sm:gap-0">
             <div className="aspect-square sm:aspect-3/2 bg-muted rounded-lg overflow-hidden w-[60%] sm:w-auto sm:max-w-xs sm:mx-auto shrink-0">
               <img
-                src={product.imageUrl}
+                src={product.images?.[0] || product.imageUrl || "/placeholder.jpg"}
                 alt={product.name}
                 className="w-full h-full object-cover"
               />
@@ -120,6 +130,24 @@ export function ProductDetailModal({ product, open, onClose }: ProductDetailModa
             <span className="font-semibold">{product.rating}</span>
             <span className="text-muted-foreground text-sm">• {product.description}</span>
           </div>
+
+          {productTypes.length > 0 && (
+            <div>
+              <h3 className="font-semibold mb-1.5 sm:mb-3 text-xs sm:text-base">Tùy chọn</h3>
+              <div className="flex gap-1.5 sm:gap-3">
+                {productTypes.map(type => (
+                  <Button
+                    key={type}
+                    variant={selectedType === type ? "default" : "outline"}
+                    onClick={() => setSelectedType(type)}
+                    className="flex-1 text-[10px] sm:text-sm h-7 sm:h-10 px-2 sm:px-4"
+                  >
+                    {type}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {product.sizes && product.sizes.length > 0 && (
             <div>
@@ -180,6 +208,19 @@ export function ProductDetailModal({ product, open, onClose }: ProductDetailModa
                 <Plus className="w-2 h-2 sm:w-4 sm:h-4" />
               </Button>
             </div>
+          </div>
+
+          <div>
+            <label className="text-xs sm:text-sm font-semibold mb-1.5 sm:mb-2 block">Ghi chú (tùy chọn)</label>
+            <textarea
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              placeholder="Ví dụ: Ít đường, nhiều đá..."
+              rows={2}
+              maxLength={200}
+              className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500 resize-none"
+            />
+            <p className="text-[9px] sm:text-xs text-muted-foreground mt-1">{note.length}/200 ký tự</p>
           </div>
 
           <div className="flex items-center justify-between pt-2 sm:pt-4 border-t">

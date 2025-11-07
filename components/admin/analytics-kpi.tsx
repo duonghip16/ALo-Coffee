@@ -43,17 +43,40 @@ export function AnalyticsKPI({ data }: AnalyticsKPIProps) {
         return (
           <motion.div
             key={kpi.title}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            whileHover={{ scale: 1.02, y: -2 }}
-            className={`bg-gradient-to-br ${kpi.color} rounded-lg lg:rounded-xl p-3 lg:p-6 shadow-lg text-white`}
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ 
+              delay: index * 0.1,
+              type: "spring",
+              stiffness: 100
+            }}
+            whileHover={{ 
+              scale: 1.05, 
+              y: -5,
+              transition: { duration: 0.2 }
+            }}
+            className={`bg-gradient-to-br ${kpi.color} rounded-xl lg:rounded-2xl p-4 lg:p-6 shadow-xl hover:shadow-2xl transition-shadow duration-300 text-white relative overflow-hidden group`}
           >
-            <div className="flex items-center justify-between mb-2 lg:mb-4">
-              <Icon className="h-5 w-5 lg:h-8 lg:w-8 opacity-80" />
+            <motion.div 
+              className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"
+            />
+            <div className="flex items-center justify-between mb-2 lg:mb-4 relative z-10">
+              <motion.div
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.6 }}
+              >
+                <Icon className="h-6 w-6 lg:h-10 lg:w-10 opacity-90" />
+              </motion.div>
             </div>
-            <p className="text-[10px] lg:text-sm opacity-90 mb-0.5 lg:mb-1">{kpi.title}</p>
-            <p className="text-base lg:text-3xl font-bold leading-tight">{kpi.value}</p>
+            <p className="text-xs lg:text-sm opacity-90 mb-1 lg:mb-2 font-medium relative z-10">{kpi.title}</p>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: index * 0.1 + 0.3 }}
+              className="text-lg lg:text-3xl font-extrabold leading-tight relative z-10"
+            >
+              {kpi.value}
+            </motion.p>
           </motion.div>
         )
       })}

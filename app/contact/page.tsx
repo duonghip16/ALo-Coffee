@@ -51,7 +51,7 @@ export default function ContactPage() {
 
   return (
     <MainLayout>
-      <section className="py-20 bg-[#F7EFE5] dark:bg-[#6f5e48]">
+      <section className="py-20 bg-[#b6a188] dark:bg-[#6f5e48] overflow-y-auto scroll-smooth">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -67,13 +67,13 @@ export default function ContactPage() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6 md:gap-12 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-12 max-w-6xl mx-auto overflow-y-auto">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <Card className="p-4 md:p-8">
+              <Card className="p-4 md:p-8 bg-[#d7b890] dark:bg-card border-[#E8DCC8] dark:border-border">
                 <h2 className="text-xl md:text-2xl font-bold text-[#3A2416] dark:text-[#FEF7ED] mb-4 md:mb-6">Gửi tin nhắn</h2>
                 <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
                   <div>
@@ -119,9 +119,9 @@ export default function ContactPage() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="space-y-3 md:space-y-6"
+              className="space-y-3 md:space-y-6 overflow-y-auto max-h-[600px] md:max-h-none"
             >
-              <Card className="p-4 md:p-6">
+              <Card className="p-4 md:p-6 bg-[#c09a69] dark:bg-card border-[#E8DCC8] dark:border-border">
                 <div className="flex items-start gap-3 md:gap-4">
                   <div className="w-10 h-10 md:w-12 md:h-12 bg-[#6B4423] rounded-full flex items-center justify-center shrink-0">
                     <MapPin className="w-5 h-5 md:w-6 md:h-6 text-white" />
@@ -141,7 +141,7 @@ export default function ContactPage() {
                 </div>
               </Card>
 
-              <Card className="p-4 md:p-6">
+              <Card className="p-4 md:p-6 bg-[#c09a69] dark:bg-card border-[#E8DCC8] dark:border-border">
                 <div className="flex items-start gap-3 md:gap-4">
                   <div className="w-10 h-10 md:w-12 md:h-12 bg-[#6B4423] rounded-full flex items-center justify-center shrink-0">
                     <Phone className="w-5 h-5 md:w-6 md:h-6 text-white" />
@@ -155,7 +155,7 @@ export default function ContactPage() {
                 </div>
               </Card>
 
-              <Card className="p-4 md:p-6">
+              <Card className="p-4 md:p-6 bg-[#c09a69] dark:bg-card border-[#E8DCC8] dark:border-border">
                 <div className="flex items-start gap-3 md:gap-4">
                   <div className="w-10 h-10 md:w-12 md:h-12 bg-[#6B4423] rounded-full flex items-center justify-center shrink-0">
                     <Mail className="w-5 h-5 md:w-6 md:h-6 text-white" />
@@ -169,7 +169,7 @@ export default function ContactPage() {
                 </div>
               </Card>
 
-              <Card className="p-4 md:p-6">
+              <Card className="p-4 md:p-6 bg-[#c09a69] dark:bg-card border-[#E8DCC8] dark:border-border">
                 <div className="flex items-start gap-3 md:gap-4">
                   <div className="w-10 h-10 md:w-12 md:h-12 bg-[#6B4423] rounded-full flex items-center justify-center shrink-0">
                     <Clock className="w-5 h-5 md:w-6 md:h-6 text-white" />
@@ -191,7 +191,7 @@ export default function ContactPage() {
             transition={{ delay: 0.3, duration: 0.6 }}
             className="mt-8 md:mt-16 max-w-6xl mx-auto"
           >
-            <Card className="overflow-hidden">
+            <Card className="overflow-hidden bg-[#c09a69] dark:bg-card border-[#E8DCC8] dark:border-border">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.4548906654524!2d106.62525287584896!3d10.853675889300108!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752a20be00e0e1%3A0x3a8a1e0e0e0e0e0e!2s149%2F10%20B%C3%B9i%20V%C4%83n%20Ng%E1%BB%AF%2C%20Hi%E1%BB%87p%20Th%C3%A0nh%2C%20Qu%E1%BA%ADn%2012%2C%20Th%C3%A0nh%20ph%E1%BB%91%20H%E1%BB%93%20Ch%C3%AD%20Minh!5e0!3m2!1svi!2s!4v1234567890123!5m2!1svi!2s"
                 width="100%"
